@@ -150,10 +150,26 @@ class StatsWidgetHelp {
             $chartHelp .= '<hr size="1"/>';
             $chartHelp .= '</div></div>';
 
+            //team-ups help
+            $chartHelp .= '<div class="statsWidgetHelpContainer">';
+            $chartHelp .= '<div class="helpHeader"><h4>Team Ups (Pie)</h4></div>';
+            $chartHelp .= '<div class="helpBody">';
+            $chartHelp .= '<img src="/extensions/StatsWidget/img/team-ups.png" class="half"><br/>';
+            $chartHelp .= '<code class="stats-demo">&lt;statschart type="team-ups"/&gt;</code><br/>';
+            $chartHelp .= 'Possible parameters:';
+            $chartHelp .= '<ul>';
+            $chartHelp .= '<li><code>shark</code> - <b>Required</b> - The shark to find the common team ups for.</li>';
+            $chartHelp .= '<li><code>category</code> - Only display team ups belonging the particular deal type category, if set.</li>';
+            $chartHelp .= '<li><code>categories</code> - Only display team ups belonging the particular deal type categories, if set.</li>';
+            $chartHelp .= '<li><code>style</code> - Either <code>size-full</code> or <code>size-half</code> [<code>right|left</code>].</li>';
+            $chartHelp .= '</ul>';
+            $chartHelp .= '<hr size="1"/>';
+            $chartHelp .= '</div></div>';
+
             $chartHelp .= "</div>";
 
             $chartHelp .= '<script>
-                RLQ.push(function() {
+                (window.RLQ=window.RLQ||[]).push(function() {
                     mw.debug = true
                     mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
                         var $ = jQuery;

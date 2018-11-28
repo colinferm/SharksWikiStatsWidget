@@ -140,6 +140,10 @@ class StatsWidgetHooks {
 			$js = StatsWidgetHooks::renderBiteBySeasonData($startSeason, $season, $categories, $shark, $average, $chartTitle);
 			StatsWidgetHooks::$scriptInclusions .= $js;
 
+		} else if ($chartType == 'team-ups') {
+			$js = StatsWidgetHooks::renderTeamUpData($categories, $shark, $chartTitle);
+			StatsWidgetHooks::$scriptInclusions .= $js;
+
 		} else {
 			return;
 		}
@@ -179,7 +183,7 @@ class StatsWidgetHooks {
 
 		$js = '
 		<script>
-			RLQ.push(function() {
+			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
 					var investmentBySharkData = {
 						labels: '.json_encode($labels).',
@@ -205,7 +209,7 @@ class StatsWidgetHooks {
 
 		$js = '
 		<script>
-			RLQ.push(function() {
+			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
 				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
 					var data = '.json_encode($data).';
@@ -248,7 +252,7 @@ class StatsWidgetHooks {
 
 		$js = '
 		<script>
-			RLQ.push(function() {
+			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
 				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
 					var numData = '.json_encode($numData).';
@@ -288,7 +292,7 @@ class StatsWidgetHooks {
 
 		$js = '
 		<script>
-			RLQ.push(function() {
+			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
 				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
 					var seasonBySeasonInvestmentData = {
@@ -335,7 +339,7 @@ class StatsWidgetHooks {
 
 		$js = '
 		<script>
-		RLQ.push(function() {
+		(window.RLQ=window.RLQ||[]).push(function() {
 			mw.debug = true
 			mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
 				var investmentAmountData = {
@@ -372,7 +376,7 @@ class StatsWidgetHooks {
 
 		$js = '
 		<script>
-		RLQ.push(function() {
+		(window.RLQ=window.RLQ||[]).push(function() {
 			mw.debug = true
 			mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
 				var seasonBySeasonBubbleData = {
@@ -419,7 +423,7 @@ class StatsWidgetHooks {
 
 		$js = '
 		<script>
-			RLQ.push(function() {
+			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
 				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
 					var dealsByInvestmentTypeData = {
@@ -468,7 +472,7 @@ class StatsWidgetHooks {
 
 		$js = '
 		<script>
-			RLQ.push(function() {
+			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
 				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
 					var dealsByCategoryData = {
@@ -527,7 +531,7 @@ class StatsWidgetHooks {
 
 		$js = '
 		<script>
-			RLQ.push(function() {
+			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
 				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
 					var biteBySeasonData = {
@@ -552,6 +556,40 @@ class StatsWidgetHooks {
 					SFS.Chart.Line.biteBySeason(biteBySeasonData, "'.$divId.'", "'.$chartTitle.'");
 				});
 			});
+		</script>
+		';
+
+		return $js;
+	}
+
+	public static function renderTeamUpData($categories, $shark, $chartTitle = "Team Ups Between Sharks") {
+		$result = StatsWidgetLib::teamupsByShark($categories, $shark);
+		$labels = $result['labels'];
+		$colors = $result['colors'];
+		$nums = $result['nums'];
+
+		$season = 0;
+		if (strlen($shark)) {
+			$seasonLabel = str_replace("'", "", $shark)."'s Team Ups With Other Sharks";
+			$chartTitle = $seasonLabel;
+		}
+
+		$js = '
+		<script>
+		(window.RLQ=window.RLQ||[]).push(function() {
+			mw.debug = true
+			mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				var teamupData = {
+					labels: '.json_encode($labels).',
+					datasets: [{
+						data: '.json_encode($nums).',
+						backgroundColor: '.json_encode($colors).',
+						label: "Teamups With Other Sharks"
+					}]
+				};
+				SFS.Chart.Pie.sharkTeamUps(teamupData, "team-ups-'.$season.'", "'.$chartTitle.'", "'.$categories.'");
+			});
+		});
 		</script>
 		';
 

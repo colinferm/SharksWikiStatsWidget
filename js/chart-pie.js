@@ -66,3 +66,35 @@ SFS.Chart.Pie.sharkInvestmentTotals = function(investmentAmountData, id, chartTi
          data: investmentAmountData
     });
 }
+
+SFS.Chart.Pie.sharkTeamUps = function(teampUpData, id, chartTitle, categories) {
+    if (categories) {
+		var formatted = SFS.Utils.formatCategoryNames(categories);
+		chartTitle += " - " + formatted;
+    }
+    
+    var byAmtCTX = document.getElementById(id).getContext("2d");
+    window.investAmtPieChart = new Chart(byAmtCTX, {
+         type: 'doughnut',
+         options: {
+             title:{
+                 display:true,
+                 text: chartTitle
+             },
+             noDataText: "Not enough deals in the dataset create a chart",
+             responsive: true,
+             tooltips: {
+                 callbacks: {
+                     label: function(tooltipItem, data){
+                        var dataset = data.datasets[tooltipItem.datasetIndex];
+                        var dataitem = dataset.data[tooltipItem.index];
+                        var label = data.labels[tooltipItem.index];
+                        
+                        return label + ': ' + dataitem.toString();
+                     }
+                 }
+             }
+         },
+         data: teampUpData
+    });
+}

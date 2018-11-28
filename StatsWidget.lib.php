@@ -1,8 +1,10 @@
 <?php
 class StatsWidgetLib {
-    public static $SITE_COLORS = ['rgba( 87,151,193,1)', 'rgba(178,214,238,1)', 'rgba(127,182,217,1)', 'rgba( 56,123,166,1)', 'rgba( 31,103,149,1)',
-            'rgba(101,106,202,1)', 'rgba( 71,77,180,1)', 'rgba( 45,51,162,1)', 'rgba( 138,143,223,1)', 'rgba( 185,187,241,1)',
-            'rgba(255,189,107,1)', 'rgba(255,176,76,1)', 'rgba(255,205,142,1)'];
+    public static $SITE_COLORS = [
+        'rgba( 87,151,193,1)', 'rgba(178,214,238,1)', 'rgba(127,182,217,1)', 'rgba( 56,123,166,1)', 'rgba( 31,103,149,1)',
+        'rgba(101,106,202,1)', 'rgba( 71,77,180,1)', 'rgba( 45,51,162,1)', 'rgba( 138,143,223,1)', 'rgba( 185,187,241,1)',
+        'rgba(255,189,107,1)', 'rgba(255,176,76,1)', 'rgba(255,205,142,1)'
+        ];
 
     public static function getLatestSeason() {
         $db = wfGetDB(DB_REPLICA);
@@ -18,11 +20,23 @@ class StatsWidgetLib {
 
     public static function getShark($shark) {
         $db = wfGetDB(DB_REPLICA);
+        $clean = StatsWidgetLib::cleanShark($shark);
 
-        $sharkQuery = "SELECT full_name FROM sfs_sharks WHERE shark = '$shark' LIMIT 1";
+        $sharkQuery = "SELECT full_name FROM sfs_sharks WHERE shark = '$clean' LIMIT 1";
         $sharkResult = $db->query($sharkQuery, 'StatsWidgetLib::getShark');
         foreach($sharkResult as $s) {
-            return $sharkResult->full_name;
+            return $s->full_name;
+        }
+    }
+
+    public static function getSharkId($shark) {
+        $db = wfGetDB(DB_REPLICA);
+        $clean = StatsWidgetLib::cleanShark($shark);
+
+        $sharkQuery = "SELECT id FROM sfs_sharks WHERE shark = '$clean' LIMIT 1";
+        $sharkResult = $db->query($sharkQuery, 'StatsWidgetLib::getSharkId');
+        foreach($sharkResult as $s) {
+            return $s->id;
         }
     }
 
@@ -592,6 +606,52 @@ class StatsWidgetLib {
         );
     }
 
+    public static function teamupsByShark($categories, $shark) {
+        // TODO possibly set a lower limit parameter, 0 to see all, but filter by a certain number...
+        //MWDebug::log("biteBySeason: Season: ".$startSeason."-".$endSeason);
+        $sharkId = StatsWidgetLib::getSharkId($shark);
+
+        $db = wfGetDB(DB_REPLICA);
+        $labels = [];
+        $data = [];
+        $colors = [];
+
+        $query = "SELECT q.shark_count, q.shark_id, s.full_name, s.main_cast FROM 
+            (SELECT COUNT(*) as shark_count, dm.shark_id
+            FROM sfs_shark_deal_map dm, sfs_deal d
+            WHERE 1 = 1
+            AND dm.deal_id = d.id
+            AND dm.deal_id IN (SELECT sdm.deal_id FROM sfs_shark_deal_map sdm WHERE 1=1 AND sdm.shark_id  = $sharkId) ";
+
+        if (strlen($categories)) {
+           $query .= "AND d.category IN ($categories) ";
+        }
+        $query .= "GROUP BY dm.shark_id) q, sfs_sharks s
+            WHERE q.shark_count > 2
+            AND q.shark_id = s.id
+            AND q.shark_id != $sharkId
+            ORDER BY q.shark_count DESC";
+
+        $teampUpResult = $db->query($query, 'StatsWidgetLib::teamupsByShark');
+        $i = 0;
+        $guestCount = 10;
+        foreach($teampUpResult as $teamUp) {
+            $labels[] = $teamUp->full_name;
+            $data[] = $teamUp->shark_count;
+
+            if ($teamUp->main_cast) {
+                $colors[] = StatsWidgetLib::$SITE_COLORS[$i];
+                $i++;
+            } else {
+                $colors[] = StatsWidgetLib::$SITE_COLORS[$guestCount];
+                $guestCount++;
+                if ($guestCount > 12) $guestCount = 7;
+            }
+        }
+
+        return array('labels' => $labels, 'nums' => $data, 'colors' => $colors);
+    }
+
     public static function dealTypeLabel($key) {
         if ($key == "IP") {
             return $key;
@@ -639,6 +699,10 @@ class StatsWidgetLib {
             $items = "'".$list."'";
         }
         return $items;
+    }
+
+    public static function cleanShark($shark) {
+        return trim(str_replace("'", "", $shark));
     }
 }
 
