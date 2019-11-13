@@ -16,13 +16,14 @@ SFS.Chart.Pie.seasonInvestmentByType = function(data, id, chartTitle, categories
                 callbacks: {
                     label: function(tooltipItem, data){
                         var dataset = data.datasets[tooltipItem.datasetIndex];
-                        var dataitem = dataset.data[tooltipItem.index];
+                        var dataItem = dataset.data[tooltipItem.index];
                         var label = data.labels[tooltipItem.index];
                         //console.log(dataset);
                         if (dataset.label == 'amount') {
-                            return  label + ': $' + dataitem.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            var dataItemNumber = Number(dataItem);
+                            return  label + ': $' + dataItemNumber.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                         }
-                        return label + ': ' + dataitem.toString();
+                        return label + ': ' + dataItem.toString();
                     }
                 }
             }
@@ -42,7 +43,7 @@ SFS.Chart.Pie.sharkInvestmentTotals = function(investmentAmountData, id, chartTi
          type: 'doughnut',
          options: {
              title:{
-                 display:true,
+                 display: true,
                  text: chartTitle
              },
              noDataText: "Not enough deals in the dataset create a chart",
@@ -51,13 +52,14 @@ SFS.Chart.Pie.sharkInvestmentTotals = function(investmentAmountData, id, chartTi
                  callbacks: {
                      label: function(tooltipItem, data){
                         var dataset = data.datasets[tooltipItem.datasetIndex];
-                        var dataitem = dataset.data[tooltipItem.index];
+                        var dataItem = dataset.data[tooltipItem.index];
                         var label = data.labels[tooltipItem.index];
                         
                         if (tooltipItem.datasetIndex == 0) {
-                            return  label + ': $' + dataitem.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            var dataItemNumber = Number(dataItem);
+                            return  label + ': $' + dataItemNumber.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                         } else {
-                            return label + ': ' + dataitem.toString();
+                            return label + ': ' + dataItem.toString();
                         }
                      }
                  }
@@ -78,7 +80,7 @@ SFS.Chart.Pie.sharkTeamUps = function(teampUpData, id, chartTitle, categories) {
          type: 'doughnut',
          options: {
              title:{
-                 display:true,
+                 display: true,
                  text: chartTitle
              },
              noDataText: "Not enough deals in the dataset create a chart",

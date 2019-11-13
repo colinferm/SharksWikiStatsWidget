@@ -108,6 +108,7 @@ class StatsWidgetHelp {
             $chartHelp .= '<li><code>season</code> - If set, will limit the data to the given season, otherwill total all seasons.</li>';
             $chartHelp .= '<li><code>shark</code> - If set, will limit data to this particular shark.</li>';
             $chartHelp .= '<li><code>limit</code> - Will limit the data to this number of categories. Will default to all.</li>';
+            $chartHelp .= '<li><code>title</code> - The title to set, overrides the default.</li>';
             $chartHelp .= '<li><code>style</code> - Either <code>size-full</code> or <code>size-half</code> [<code>right|left</code>].</li>';
             $chartHelp .= '</ul>';
             $chartHelp .= '<hr size="1"/>';
@@ -126,6 +127,7 @@ class StatsWidgetHelp {
             $chartHelp .= '<li><code>shark</code> - If set, will add the given shark to the data set (when <code>main-cast</code> is <code>true</code>.</li>';
             $chartHelp .= '<li><code>category</code> - Only display data belonging the particular deal type category, if set.</li>';
             $chartHelp .= '<li><code>categories</code> - Only display data belonging the particular deal type categories, if set.</li>';
+            $chartHelp .= '<li><code>title</code> - The title to set, overrides the default.</li>';
             $chartHelp .= '<li><code>style</code> - Either <code>size-full</code> or <code>size-half</code> [<code>right|left</code>].</li>';
             $chartHelp .= '</ul>';
             $chartHelp .= '<hr size="1"/>';
@@ -161,6 +163,7 @@ class StatsWidgetHelp {
             $chartHelp .= '<li><code>shark</code> - <b>Required</b> - The shark to find the common team ups for.</li>';
             $chartHelp .= '<li><code>category</code> - Only display team ups belonging the particular deal type category, if set.</li>';
             $chartHelp .= '<li><code>categories</code> - Only display team ups belonging the particular deal type categories, if set.</li>';
+            $chartHelp .= '<li><code>limit</code> - Will only show team-ups of three or more times unless set. Setting to zero will show every team up.</li>';
             $chartHelp .= '<li><code>style</code> - Either <code>size-full</code> or <code>size-half</code> [<code>right|left</code>].</li>';
             $chartHelp .= '</ul>';
             $chartHelp .= '<hr size="1"/>';

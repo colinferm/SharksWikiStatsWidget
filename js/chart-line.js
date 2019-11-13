@@ -139,8 +139,10 @@ SFS.Chart.Line.dealsByCategory = function(data, id, chartTitle) {
     });
 }
 
-SFS.Chart.Line.biteBySeason = function(data, id, chartTitle) {
+SFS.Chart.Line.biteBySeason = function(data, id, chartTitle, average) {
     var biteBySeasonCTX = document.getElementById(id).getContext("2d");
+    var leftLabel = 'Total Capitalization Value';
+    if (average) leftLabel = 'Average Capitalization Value';
     window.biteBySeasonChart = new Chart(biteBySeasonCTX, {
         type: 'line',
         data: data,
@@ -176,7 +178,7 @@ SFS.Chart.Line.biteBySeason = function(data, id, chartTitle) {
                 yAxes: [{
                     stacked: false,
                     scaleLabel: {
-                        labelString: 'Total Capitalization Value',
+                        labelString: leftLabel,
                         display: true
                     },
                     ticks: {

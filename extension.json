@@ -10,22 +10,27 @@
 	
 	"AutoloadClasses": {
 		"StatsWidgetLib": "StatsWidget.lib.php",
+		"StatsWidgetRender": "StatsWidget.render.php",
 		"StatsWidgetHooks": "StatsWidget.hooks.php",
-		"StatsWidgetHelp": "StatsWidget.help.php"
+		"StatsWidgetHelp": "StatsWidget.help.php",
+		"StatsTrivia": "StatsTrivia.lib.php"
 	},
 	
 	"ResourceModules": {
 		"ext.statsforsharks.statswidget.js": {
 			"scripts": [
 				"js/vendor/Chart.bundle.js",
+				"js/vendor/color.js",
 				"js/statsshark.js",
 				"js/chart-bar.js",
 				"js/chart-bubble.js",
 				"js/chart-line.js",
 				"js/chart-pie.js"
 			],
-			"styles": [],
 			"position": "bottom"
+		},
+		"ext.statsforsharks.statswidget.css": {
+			"styles": "css/stats.less"
 		}
 	},
 	

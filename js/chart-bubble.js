@@ -35,6 +35,9 @@ SFS.Chart.Bubble.seasonInvestmentByType = function(data, id, chartTitle, categor
 					scaleLabel: {
 						labelString: '# of Deals',
 						display: true
+					},
+					ticks: {
+						suggestedMax: 30
 					}
 				}]
 			}

@@ -3,7 +3,8 @@ class StatsWidgetLib {
     public static $SITE_COLORS = [
         'rgba( 87,151,193,1)', 'rgba(178,214,238,1)', 'rgba(127,182,217,1)', 'rgba( 56,123,166,1)', 'rgba( 31,103,149,1)',
         'rgba(101,106,202,1)', 'rgba( 71,77,180,1)', 'rgba( 45,51,162,1)', 'rgba( 138,143,223,1)', 'rgba( 185,187,241,1)',
-        'rgba(255,189,107,1)', 'rgba(255,176,76,1)', 'rgba(255,205,142,1)'
+        'rgba(255,189,107,1)', 'rgba(255,176,76,1)', 'rgba(255,205,142,1)', 'rgb(105,105,105)', 'rgb(128,128,128)',
+        'rgb(169,169,169)', 'rgb(192,192,192)', 'rgb(211,211,211)', 'rgb(220,220,220)'
         ];
 
     public static function getLatestSeason() {
@@ -143,12 +144,15 @@ class StatsWidgetLib {
         if ($season > 0) {
             $investmentQuery .= "AND e.season_id = ".$safeSeason." ";
         }
+        /*
         if (strlen($categories)) {
             $investmentQuery .= "AND d.category IN (".$categories.") ";
         }
         if ($season == 0 || (strlen($categories) && strpos($categories, ","))) {
             //$investmentQuery .= "AND d.deal_type != 'NONE' ";
         }
+        */
+        $investmentQuery .= StatsWidgetLib::builCategoryQuery($categories);
         if (strlen($shark)) {
             $investmentQuery .= "AND s.shark IN (".$shark.") ";
         }
@@ -278,9 +282,28 @@ class StatsWidgetLib {
                     "AND s.id = sdm.shark_id ".
                     "AND d.episode_id = e.id ";
             
-            if (strlen($categories)) {
-                $amtQuery .= "AND d.category IN (".$categories.") ";
+            $amtQuery .= StatsWidgetLib::builCategoryQuery($categories);
+            /*
+            if (strlen($categories) && strpos($categories, ',') != -1) {
+                $comma_count = substr_count($categories, ',') + 1;
+                $amtQuery .= "
+                    AND d.id IN (
+                        SELECT d.id
+                        FROM sfs_deal d
+                        JOIN sfs_episodes e ON d.episode_id = e.id
+                        JOIN sfs_deal_category_map m ON d.id = m.deal_id
+                        WHERE 1 = 1
+                        AND m.category_id IN (
+                        SELECT id FROM sfs_category WHERE code IN ({$categories})
+                        )
+                        GROUP BY d.id
+                        HAVING count(*) = {$comma_count}
+                    )
+                ";
+            } else if (strlen($categories)) {
+                $amtQuery .= "AND d.category IN ({$categories}) ";
             }
+            */
 
             $amtQuery .=  "AND s.id IN (SELECT DISTINCT id FROM sfs_sharks s WHERE 1=1 ";
 
@@ -325,9 +348,12 @@ class StatsWidgetLib {
         if ($season > 0) {
             $investmentAmtQuery .= "AND e.season_id = ".$season." ";
         }
+        $investmentAmtQuery .= StatsWidgetLib::builCategoryQuery($categories);
+        /*
         if (strlen($categories)) {
             $investmentAmtQuery .= "AND d.category IN (".$categories.") ";
         }
+        */
 
         $investmentAmtQuery .= "GROUP BY s.shark ORDER BY ";
         if (strlen($shark)) {
@@ -590,7 +616,7 @@ class StatsWidgetLib {
                             "AND sharks.shark IN (".$shark.") ";
         }
         $dealCapQuery .= "GROUP BY s.season ".
-                        "ORDER BY s.season ASC"; 
+                        "ORDER BY s.id ASC"; 
 
         $dealCapResult = $db->query($dealCapQuery, 'StatsWidgetLib::biteBySeason');
         foreach($dealCapResult as $seasonData) {
@@ -606,7 +632,7 @@ class StatsWidgetLib {
         );
     }
 
-    public static function teamupsByShark($categories, $shark) {
+    public static function teamupsByShark($categories, $shark, $limit) {
         // TODO possibly set a lower limit parameter, 0 to see all, but filter by a certain number...
         //MWDebug::log("biteBySeason: Season: ".$startSeason."-".$endSeason);
         $sharkId = StatsWidgetLib::getSharkId($shark);
@@ -626,11 +652,18 @@ class StatsWidgetLib {
         if (strlen($categories)) {
            $query .= "AND d.category IN ($categories) ";
         }
-        $query .= "GROUP BY dm.shark_id) q, sfs_sharks s
-            WHERE q.shark_count > 2
-            AND q.shark_id = s.id
-            AND q.shark_id != $sharkId
-            ORDER BY q.shark_count DESC";
+        $query .= "GROUP BY dm.shark_id) q, sfs_sharks s ";
+
+        if (strlen($categories)) {
+            $query .= "WHERE q.shark_count > 0 ";
+        } else if ($limit > 0) {
+            $query .= "WHERE q.shark_count >= ".$limit." ";
+        } else {
+            $query .= "WHERE q.shark_count > 2 ";
+        }
+        $query .= "AND q.shark_id = s.id
+                AND q.shark_id != $sharkId
+                ORDER BY q.shark_count DESC";
 
         $teampUpResult = $db->query($query, 'StatsWidgetLib::teamupsByShark');
         $i = 0;
@@ -660,7 +693,7 @@ class StatsWidgetLib {
         } else if ($key == 'EQ') {
             return "Equity";
         } else if ($key == 'EQ-R') {
-            return "Equity/Royality Mix";
+            return "Equity/Royalty Mix";
         } else if ($key == 'EQ-DEBT') {
             return "Equity/Debt Mix";
         } else if ($key == 'SALE') {
@@ -703,6 +736,30 @@ class StatsWidgetLib {
 
     public static function cleanShark($shark) {
         return trim(str_replace("'", "", $shark));
+    }
+
+    public static function builCategoryQuery($categories) {
+        $query = " ";
+        if (strlen($categories) && strpos($categories, ',') != -1) {
+            $comma_count = substr_count($categories, ',') + 1;
+            $query = "
+                AND d.id IN (
+                    SELECT d.id
+                    FROM sfs_deal d
+                    JOIN sfs_episodes e ON d.episode_id = e.id
+                    JOIN sfs_deal_category_map m ON d.id = m.deal_id
+                    WHERE 1 = 1
+                    AND m.category_id IN (
+                        SELECT id FROM sfs_category WHERE code IN ({$categories})
+                    )
+                    GROUP BY d.id
+                    HAVING count(*) = {$comma_count}
+                )
+            ";
+        } else if (strlen($categories)) {
+            $query = " AND d.category IN ({$categories}) ";
+        }
+        return $query;
     }
 }
 

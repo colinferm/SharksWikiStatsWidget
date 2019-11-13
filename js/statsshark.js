@@ -1,29 +1,38 @@
+var Color = net.brehaut.Color;
 var SFS = SFS || {
     Chart: {
         Bar: {},
         Bubble: {},
         Line: {},
-        Pie: {}
+        Pie: {},
+    },
+    Options: {
+        showAllToolTips: false
     },
     Constant: {
-        colorOne: 'rgba( 87,151,193,1)',
-        colorTwo: 'rgba(178,214,238,1)',
-        colorThree: 'rgba(127,182,217,1)',
-        colorFour: 'rgba( 56,123,166,1)',
-        colorFive: 'rgba( 31,103,149,1)',
-        colorSecondaryOne: 'rgba(101,106,202,1)',
-        colorSecondaryTwo: 'rgba( 71,77,180,1)',
-        colorSecondaryThree: 'rgba( 45,51,162,1)',
-        colorSecondaryFour: 'rgba( 138,143,223,1)',
-        colorSecondaryFive: 'rgba( 185,187,241,1)',
-        colorComp: 'rgba(255,189,107,1)',
-        colorCompTwo: 'rgba(255,176,76,1)',
-        colorCompThree: 'rgba(255,205,142,1)',
+        Colors: {
+            White: 'rgb(255, 255, 255)',
+            Black: 'rgb(0, 0, 0)',
+            Primary: 'rgba(87,151,193,1)',
+            PrimaryTwo: 'rgba(178,214,238,1)',
+            PrimaryThree: 'rgba(127,182,217,1)',
+            PrimaryFour: 'rgba( 56,123,166,1)',
+            PrimaryFive: 'rgba( 31,103,149,1)',
+            Secondary: 'rgba(101,106,202,1)',
+            SecondaryTwo: 'rgba( 71,77,180,1)',
+            SecondaryThree: 'rgba( 45,51,162,1)',
+            SecondaryFour: 'rgba( 138,143,223,1)',
+            SecondaryFive: 'rgba( 185,187,241,1)',
+            Complimentary: 'rgba(255,189,107,1)',
+            ComplimentaryTwo: 'rgba(255,176,76,1)',
+            ComplimentaryThree: 'rgba(255,205,142,1)',
+        },
         siteColors: [
             'rgba( 87,151,193,1)', 'rgba(178,214,238,1)', 'rgba(127,182,217,1)', 'rgba( 56,123,166,1)', 'rgba( 31,103,149,1)',
             'rgba(101,106,202,1)', 'rgba( 71,77,180,1)', 'rgba( 45,51,162,1)', 'rgba( 138,143,223,1)', 'rgba( 185,187,241,1)',
             'rgba(255,189,107,1)', 'rgba(255,176,76,1)', 'rgba(255,205,142,1)','rgba(0,0,0,1)','rgba(0,0,0,0.75)'
-        ]
+        ],
+        colorWhite: 'rgb(255, 255, 255)'
     },
     Utils: {
         Plugins: {
@@ -90,17 +99,19 @@ var SFS = SFS || {
             var label = chart.config.data.datasets[dataSetIndex].label;
             var data = chart.config.data.datasets[dataSetIndex].data[dataIndex];
             //tooltip.body[0].lines[0] = label;
+            var safeAmt = Number(data.amt);
             tooltip.body[0].lines.pop();
             tooltip.title.push(label);
             tooltip.displayColors = false;
-            tooltip.footer.push("Total: $" + data.amt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            tooltip.footer.push("Total: $" + safeAmt.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
             var categories = data.categories;
             var catLen = categories.length;
             
             for (var i = 0 ; i < catLen; i++) {
                 var cat = categories[i];
                 if (cat.category && cat.total) {
-                    var line = cat.category + ": $"+ cat.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    var safeTotal = Number(cat.total);
+                    var line = cat.category + ": $"+ safeTotal.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     tooltip.body[0].lines.push(line);
                 }
             }
@@ -118,12 +129,14 @@ var SFS = SFS || {
             var dataitem = dataset.data[tooltipItem.index];
             var label = dataset.label;
             //console.log(dataitem.toString());
-            return  label + ': $' + dataitem.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            var safeValue = Number(dataitem);
+            return  label + ': $' + safeValue.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
         
         MoneyTicks: function(value, index, values) {
             //console.log(value);
-            return  ' $' + value.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            var safeValue = Number(value);
+            return  ' $' + safeValue.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
     }
 };
