@@ -35,6 +35,7 @@ class StatsWidgetHooks {
 		$shark = "";
 		$style = "";
 		$limit = 0;
+		$vTicks = 0;
 		$average = false;
 
 		if (array_key_exists("style", $args))
@@ -67,6 +68,9 @@ class StatsWidgetHooks {
 
 		if (array_key_exists("limit", $args))
 			$limit = htmlspecialchars($args['limit']);
+
+		if (array_key_exists("vticks", $args))
+			$vTicks = htmlspecialchars($args['vticks']);
 
 		if (array_key_exists("average", $args)) {
 			$averageParam = htmlspecialchars($args['average']);
@@ -138,7 +142,7 @@ class StatsWidgetHooks {
 
 		} else if ($chartType == 'shark-rel-investment') {
 			//HERE
-			$js = StatsWidgetRender::renderSharkRelativeInvestmentData($startSeason, $season, $categories, $shark);
+			$js = StatsWidgetRender::renderSharkRelativeInvestmentData($startSeason, $season, $categories, $shark, $vTicks);
 			StatsWidgetHooks::$scriptInclusions .= $js;
 
 		} else if ($chartType == 'types-by-season') {
@@ -183,11 +187,22 @@ class StatsWidgetHooks {
 			$chart = StatsWidgetRender::renderBiggestBiteChart($categories, $shark, $season, $chartTitle);
 			return array($chart, "markerType" => 'nowiki' );;
 		} else {
-			$chart = '
-				<div id="'.$chartType.'-holder" class="statschart '.$chartType.' '.$style.'">
-					<canvas id="'.$chartId.'" />
-				</div>
-			'.$js;
+			if (substr_count($style, 'size-full')) {
+				$chart = '
+					<div class="chart-scroll-container">
+						<div class="scroll-instructions">Scroll chart to see it all!</div>
+						<div id="'.$chartType.'-holder" class="statschart '.$chartType.' '.$style.'">
+							<canvas id="'.$chartId.'" />
+						</div>
+					</div>
+				'.$js;
+			} else {
+				$chart = '
+					<div id="'.$chartType.'-holder" class="statschart '.$chartType.' '.$style.'">
+						<canvas id="'.$chartId.'" />
+					</div>
+				'.$js;
+			}
 			return array($chart, "markerType" => 'nowiki' );;
 		}
 	}

@@ -76,6 +76,7 @@ class StatsWidgetHelp {
             $chartHelp .= '<li><code>category</code> - Only display data belonging the particular deal type category, if set.</li>';
             $chartHelp .= '<li><code>categories</code> - Only display data belonging the particular deal type categories, if set.</li>';
             $chartHelp .= '<li><code>title</code> - The title to set, overrides the default.</li>';
+            $chartHelp .= '<li><code>vticks</code> - The number of ticks on the chart to display (for low number charts).</li>';
             $chartHelp .= '<li><code>style</code> - Either <code>size-full</code> or <code>size-half</code> [<code>right|left</code>].</li>';
             $chartHelp .= '</ul>';
             $chartHelp .= '<hr size="1"/>';

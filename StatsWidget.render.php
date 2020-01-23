@@ -203,7 +203,7 @@ class StatsWidgetRender {
 		return $js;
 	}
 
-	public static function renderSharkRelativeInvestmentData($startSeason, $season, $categories, $shark) {
+	public static function renderSharkRelativeInvestmentData($startSeason, $season, $categories, $shark, $vTicks = 0) {
 		MWDebug::log("Categories: ".$categories);
 		$result = StatsWidgetLib::relativeInvestmentByShark($startSeason, $season, $categories, $shark);
 
@@ -241,7 +241,7 @@ class StatsWidgetRender {
 					}
 					$js .= ']
 				}
-				SFS.Chart.Bubble.seasonInvestmentByType(seasonBySeasonBubbleData, "shark-rel-investment-'.$season.'", "'.$chartTitle.'", "'.$categories.'");
+				SFS.Chart.Bubble.seasonInvestmentByType(seasonBySeasonBubbleData, "shark-rel-investment-'.$season.'", "'.$chartTitle.'", "'.$categories.'", "'.$vTicks.'");
 			});
 		});
 		</script>
