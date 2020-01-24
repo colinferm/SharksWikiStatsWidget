@@ -3,17 +3,20 @@
 	"author": "Colin Andrew Ferm",
 	"url": "https://www.mediawiki.org/wiki/Extension:Example",
 	"description": "Added the ability to put embeddable Charts into the MediaWiki and generate the data.",
-	"version": "1.0",
+	"version": "2.0",
 	"license-name": "GPL-2.0+",
 	"type": "validextensionclass",
-	"manifest_version": 1,
+	"requires": {
+		"MediaWiki": ">= 1.32.0"
+	},
 	
 	"AutoloadClasses": {
 		"StatsWidgetLib": "StatsWidget.lib.php",
 		"StatsWidgetRender": "StatsWidget.render.php",
 		"StatsWidgetHooks": "StatsWidget.hooks.php",
 		"StatsWidgetHelp": "StatsWidget.help.php",
-		"StatsTrivia": "StatsTrivia.lib.php"
+		"StatsTrivia": "StatsTrivia.lib.php",
+		"StatsAPI": "StatsTrivia.api.php"
 	},
 	
 	"ResourceModules": {
@@ -26,6 +29,10 @@
 				"js/chart-bubble.js",
 				"js/chart-line.js",
 				"js/chart-pie.js"
+			],
+			"dependencies": [
+				"mediawiki.api",
+				"jquery"
 			],
 			"position": "bottom"
 		},
@@ -51,5 +58,6 @@
 	"ResourceFileModulePaths": {
         "localBasePath": "",
         "remoteSkinPath": "StatsWidget"
-    }
+	},
+	"manifest_version": 1
 }
