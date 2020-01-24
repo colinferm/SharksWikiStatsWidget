@@ -15,15 +15,13 @@ class StatsWidgetRender {
 		$js = '
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
-				(function (mw) {
-					mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
-						var investmentBySharkData = {
-							labels: '.json_encode($labels).',
-							datasets: '.json_encode($data).'
-						};
-						SFS.Chart.Bar.investmentsByShark(investmentBySharkData, "deal-type-mix-'.$season.'", "'.$seasonLabel.'","'.$categories.'");
-					});
-				}(mediaWiki));
+				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+					var investmentBySharkData = {
+						labels: '.json_encode($labels).',
+						datasets: '.json_encode($data).'
+					};
+					SFS.Chart.Bar.investmentsByShark(investmentBySharkData, "deal-type-mix-'.$season.'", "'.$seasonLabel.'","'.$categories.'");
+				});
 			});
 		</script>
 		';
@@ -47,25 +45,22 @@ class StatsWidgetRender {
 		$js = '
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
-				(function (mw) {
-					mw.debug = true
-					mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
-						var data = '.json_encode($data).';
-						var backgrounds = new Array();
-						for (var i = 0; i < data.length; i++) {
-							backgrounds.push(SFS.Constant.siteColors[i]);
-						}
-						var dealTypeData = {
-							labels: '.json_encode($labels).',
-							datasets: [{
-								data: data,
-								backgroundColor: backgrounds,
-								label: "Season '.$season.' - Investment by Deal Type"
-							}]
-						};
-						SFS.Chart.Pie.seasonInvestmentByType(dealTypeData, "season-investment-by-type-'.$season.'", "'.$seasonLabel.'", "'.$categories.'");
-					});
-				}(mediaWiki));
+				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+					var data = '.json_encode($data).';
+					var backgrounds = new Array();
+					for (var i = 0; i < data.length; i++) {
+						backgrounds.push(SFS.Constant.siteColors[i]);
+					}
+					var dealTypeData = {
+						labels: '.json_encode($labels).',
+						datasets: [{
+							data: data,
+							backgroundColor: backgrounds,
+							label: "Season '.$season.' - Investment by Deal Type"
+						}]
+					};
+					SFS.Chart.Pie.seasonInvestmentByType(dealTypeData, "season-investment-by-type-'.$season.'", "'.$seasonLabel.'", "'.$categories.'");
+				});
 			});
 		</script>';
 
@@ -92,29 +87,26 @@ class StatsWidgetRender {
 		$js = '
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
-				(function (mw) {
-					mw.debug = true
-					mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
-						var numData = '.json_encode($numData).';
-						var backgrounds = new Array();
-						for (var i = 0; i < numData.length; i++) {
-							backgrounds.push(SFS.Constant.siteColors[i]);
-						}
-						var dealTypeData = {
-							labels: '.json_encode($labels).',
-							datasets: [{
-								data: '.json_encode($amtData).',
-								backgroundColor: backgrounds,
-								label: "amount"
-							},{
-								data: numData,
-								backgroundColor: backgrounds,
-								label: "number"
-							}]
-						};
-						SFS.Chart.Pie.seasonInvestmentByType(dealTypeData, "season-investment-by-category-'.$season.'", "'.$seasonLabel.'");
-					});
-				}(mediaWiki));
+				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+					var numData = '.json_encode($numData).';
+					var backgrounds = new Array();
+					for (var i = 0; i < numData.length; i++) {
+						backgrounds.push(SFS.Constant.siteColors[i]);
+					}
+					var dealTypeData = {
+						labels: '.json_encode($labels).',
+						datasets: [{
+							data: '.json_encode($amtData).',
+							backgroundColor: backgrounds,
+							label: "amount"
+						},{
+							data: numData,
+							backgroundColor: backgrounds,
+							label: "number"
+						}]
+					};
+					SFS.Chart.Pie.seasonInvestmentByType(dealTypeData, "season-investment-by-category-'.$season.'", "'.$seasonLabel.'");
+				});
 			});
 		</script>';
 
@@ -133,33 +125,30 @@ class StatsWidgetRender {
 
 		$js = '
 		<script>
-			(window.RLQ=window.RLQ||[]).push(function() {
-				(function (mw) {
-					mw.debug = true
-					mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
-						var seasonBySeasonInvestmentData = {
-							labels: '.json_encode($seasons).',
-							datasets: [
+			(window.RLQ=window.RLQ||[]).push(function() { 
+				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+					var seasonBySeasonInvestmentData = {
+						labels: '.json_encode($seasons).',
+						datasets: [
+							';
+							$sharkCount = 0;
+							foreach ($sharkData as $shark => $amounts) :
+								$js .= '
+								{
+									label: "'.$shark.'",
+									backgroundColor: SFS.Constant.siteColors['.$sharkCount.'],
+									borderColor: SFS.Constant.siteColors['.$sharkCount.'],
+									data: '.str_replace('"', '', json_encode($amounts)).',
+									fill: false,
+								},
 								';
-								$sharkCount = 0;
-								foreach ($sharkData as $shark => $amounts) :
-									$js .= '
-									{
-										label: "'.$shark.'",
-										backgroundColor: SFS.Constant.siteColors['.$sharkCount.'],
-										borderColor: SFS.Constant.siteColors['.$sharkCount.'],
-										data: '.str_replace('"', '', json_encode($amounts)).',
-										fill: false,
-									},
-									';
-									$sharkCount++;
-								endforeach;
-							$js .= '
-							]
-						};
-						SFS.Chart.Line.investmentBySeason(seasonBySeasonInvestmentData, "shark-season-investment-'.$end.'", "'.$chartTitle.'", "'.$categories.'");
-					});
-				}(mediaWiki));
+								$sharkCount++;
+							endforeach;
+						$js .= '
+						]
+					};
+					SFS.Chart.Line.investmentBySeason(seasonBySeasonInvestmentData, "shark-season-investment-'.$end.'", "'.$chartTitle.'", "'.$categories.'");
+				});
 			});
 		</script>
 		';
@@ -186,26 +175,23 @@ class StatsWidgetRender {
 		$js = '
 		<script>
 		(window.RLQ=window.RLQ||[]).push(function() {
-			(function (mw) {
-				mw.debug = true
-				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
-					var investmentAmountData = {
-						labels: '.json_encode($labels).',
-						datasets: [{
-							data: '.json_encode($amts).',
-							backgroundColor: '.json_encode($colors).',
-							label: "Investment by Deal Type"
-						},
-						{
-							data: '.json_encode($nums).',
-							backgroundColor: '.json_encode($colors).',
-							label: "Investment by Numbers"
-						},
-						]
-					};
-					SFS.Chart.Pie.sharkInvestmentTotals(investmentAmountData, "shark-amt-investment-'.$season.'", "'.$chartTitle.'", "'.$categories.'");
-				});
-			}(mediaWiki));
+			mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+				var investmentAmountData = {
+					labels: '.json_encode($labels).',
+					datasets: [{
+						data: '.json_encode($amts).',
+						backgroundColor: '.json_encode($colors).',
+						label: "Investment by Deal Type"
+					},
+					{
+						data: '.json_encode($nums).',
+						backgroundColor: '.json_encode($colors).',
+						label: "Investment by Numbers"
+					},
+					]
+				};
+				SFS.Chart.Pie.sharkInvestmentTotals(investmentAmountData, "shark-amt-investment-'.$season.'", "'.$chartTitle.'", "'.$categories.'");
+			});
 		});
 		</script>
 		';
@@ -225,36 +211,33 @@ class StatsWidgetRender {
 		$js = '
 		<script>
 		(window.RLQ=window.RLQ||[]).push(function() {
-			(function (mw) {
-				mw.debug = true
-				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
-					var seasonBySeasonBubbleData = {
-						datasets: [';
-						foreach($result as &$shark) {
-							$js .= '
-								{
-								label: "'.$shark['label'].'",
-								backgroundColor: "'.$shark['color'].'",
-								borderColor: SFS.Constant.Colors.White,
-								borderWidth: 1,
-								data: [';
-								foreach($shark['data'] as &$s) {
-									$js .= '{
-										x: '.$s['season'].',
-										y: '.$s['num_deals'].',
-										r: '.$s['radius'].',
-										amt: '.$s['amt_invested'].',
-										categories: '.json_encode($s['categories']).'
-									},';
-								}
-								$js .= ']';
-							$js .= '},';
-						}
-						$js .= ']
+			mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+				var seasonBySeasonBubbleData = {
+					datasets: [';
+					foreach($result as &$shark) {
+						$js .= '
+							{
+							label: "'.$shark['label'].'",
+							backgroundColor: "'.$shark['color'].'",
+							borderColor: SFS.Constant.Colors.White,
+							borderWidth: 1,
+							data: [';
+							foreach($shark['data'] as &$s) {
+								$js .= '{
+									x: '.$s['season'].',
+									y: '.$s['num_deals'].',
+									r: '.$s['radius'].',
+									amt: '.$s['amt_invested'].',
+									categories: '.json_encode($s['categories']).'
+								},';
+							}
+							$js .= ']';
+						$js .= '},';
 					}
-					SFS.Chart.Bubble.seasonInvestmentByType(seasonBySeasonBubbleData, "shark-rel-investment-'.$season.'", "'.$chartTitle.'", "'.$categories.'", "'.$vTicks.'");
-				});
-			}(mediaWiki));
+					$js .= ']
+				}
+				SFS.Chart.Bubble.seasonInvestmentByType(seasonBySeasonBubbleData, "shark-rel-investment-'.$season.'", "'.$chartTitle.'", "'.$categories.'", "'.$vTicks.'");
+			});
 		});
 		</script>
 		';
@@ -274,33 +257,30 @@ class StatsWidgetRender {
 		$js = '
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
-				(function (mw) {
-					mw.debug = true
-					mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
-						var dealsByInvestmentTypeData = {
-							labels: '.json_encode($seasonLabels).',
-							datasets: [
+				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+					var dealsByInvestmentTypeData = {
+						labels: '.json_encode($seasonLabels).',
+						datasets: [
+							';
+							$typeCount = 0;
+							foreach ($data as $type => $counts) :
+								$js .= '
+								{
+									label: "'.StatsWidgetLib::dealTypeLabel($type).'",
+									backgroundColor: SFS.Constant.siteColors['.$typeCount.'],
+									borderColor: SFS.Constant.siteColors['.$typeCount.'],
+									data: '.str_replace('"', '', json_encode($counts)).',
+									spanGaps: true,
+									fill: false,
+								},
 								';
-								$typeCount = 0;
-								foreach ($data as $type => $counts) :
-									$js .= '
-									{
-										label: "'.StatsWidgetLib::dealTypeLabel($type).'",
-										backgroundColor: SFS.Constant.siteColors['.$typeCount.'],
-										borderColor: SFS.Constant.siteColors['.$typeCount.'],
-										data: '.str_replace('"', '', json_encode($counts)).',
-										spanGaps: true,
-										fill: false,
-									},
-									';
-									$typeCount++;
-								endforeach;
-							$js .= '
-							]
-						};
-						SFS.Chart.Line.dealsByType(dealsByInvestmentTypeData, "types-by-season-'.$end.'", "Season '.$end.' - Deal Types");
-					});
-				}(mediaWiki));
+								$typeCount++;
+							endforeach;
+						$js .= '
+						]
+					};
+					SFS.Chart.Line.dealsByType(dealsByInvestmentTypeData, "types-by-season-'.$end.'", "Season '.$end.' - Deal Types");
+				});
 			});
 		</script>
 		';
@@ -325,36 +305,33 @@ class StatsWidgetRender {
 		$js = '
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
-				(function (mw) {
-					mw.debug = true
-					mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
-						var dealsByCategoryData = {
-							labels: '.json_encode($seasonLabels).',
-							datasets: [
-								';
-								$catCount = 0;
-								foreach ($data as $cat => $counts) :
-									$js .= '
-									{
-										label: "'.StatsWidgetLib::categoryLabel($cat).'",
-										backgroundColor: SFS.Constant.siteColors['.$catCount.'],
-										borderColor: SFS.Constant.siteColors['.$catCount.'],
-										data: '.str_replace('"', '', json_encode($counts)).',
-										fill: false,
-										';
-										if (strlen($categories) && strpos($categories, $cat) === FALSE) {
-											$js .= 'hidden: true,';
-										}
-									$js .= '},
+				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+					var dealsByCategoryData = {
+						labels: '.json_encode($seasonLabels).',
+						datasets: [
+							';
+							$catCount = 0;
+							foreach ($data as $cat => $counts) :
+								$js .= '
+								{
+									label: "'.StatsWidgetLib::categoryLabel($cat).'",
+									backgroundColor: SFS.Constant.siteColors['.$catCount.'],
+									borderColor: SFS.Constant.siteColors['.$catCount.'],
+									data: '.str_replace('"', '', json_encode($counts)).',
+									fill: false,
 									';
-									$catCount++;
-								endforeach;
-							$js .= '
-							]
-						};
-						SFS.Chart.Line.dealsByCategory(dealsByCategoryData, "categories-by-season-'.$end.'", "'.$chartTitle.'");
-					});
-				}(mediaWiki));
+									if (strlen($categories) && strpos($categories, $cat) === FALSE) {
+										$js .= 'hidden: true,';
+									}
+								$js .= '},
+								';
+								$catCount++;
+							endforeach;
+						$js .= '
+						]
+					};
+					SFS.Chart.Line.dealsByCategory(dealsByCategoryData, "categories-by-season-'.$end.'", "'.$chartTitle.'");
+				});
 			});
 		</script>
 		';
@@ -386,37 +363,34 @@ class StatsWidgetRender {
 		$js = '
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
-				(function (mw) {
-					mw.debug = true
-					mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
-						var biteBySeasonData = {
-							labels: '.json_encode($labels).',
-							datasets: [
-								{
-									label: "Company Worth After the Bite",
-									backgroundColor: Color(SFS.Constant.Colors.Complimentary).alpha(0.8).rgbString(),
-									borderColor: SFS.Constant.Colors.ComplimentaryThree,
-									data: '.str_replace('"', '', json_encode($bite)).',
-									fill: true,
-									pointBorderColor: SFS.Constant.Colors.White,
-									pointRadius: 5,
-									pointHoverRadius: 10
-								},
-								{
-									label: "Proposed Company Values",
-									backgroundColor: Color(SFS.Constant.Colors.Primary).alpha(0.8).rgbString(),
-									borderColor: SFS.Constant.Colors.PrimaryThree,
-									data: '.str_replace('"', '', json_encode($proposed)).',
-									fill: true,
-									pointBorderColor: SFS.Constant.Colors.White,
-									pointRadius: 5,
-									pointHoverRadius: 10
-								}
-							]
-						};
-						SFS.Chart.Line.biteBySeason(biteBySeasonData, "'.$divId.'", "'.$chartTitle.'", '.$average.');
-					});
-				}(mediaWiki));
+				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+					var biteBySeasonData = {
+						labels: '.json_encode($labels).',
+						datasets: [
+							{
+								label: "Company Worth After the Bite",
+								backgroundColor: Color(SFS.Constant.Colors.Complimentary).alpha(0.8).rgbString(),
+								borderColor: SFS.Constant.Colors.ComplimentaryThree,
+								data: '.str_replace('"', '', json_encode($bite)).',
+								fill: true,
+								pointBorderColor: SFS.Constant.Colors.White,
+								pointRadius: 5,
+								pointHoverRadius: 10
+							},
+							{
+								label: "Proposed Company Values",
+								backgroundColor: Color(SFS.Constant.Colors.Primary).alpha(0.8).rgbString(),
+								borderColor: SFS.Constant.Colors.PrimaryThree,
+								data: '.str_replace('"', '', json_encode($proposed)).',
+								fill: true,
+								pointBorderColor: SFS.Constant.Colors.White,
+								pointRadius: 5,
+								pointHoverRadius: 10
+							}
+						]
+					};
+					SFS.Chart.Line.biteBySeason(biteBySeasonData, "'.$divId.'", "'.$chartTitle.'", '.$average.');
+				});
 			});
 		</script>
 		';
@@ -440,20 +414,17 @@ class StatsWidgetRender {
 		$js = '
 		<script>
 		(window.RLQ=window.RLQ||[]).push(function() {
-			(function (mw) {
-				mw.debug = true
-				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
-					var teamupData = {
-						labels: '.json_encode($labels).',
-						datasets: [{
-							data: '.json_encode($nums).',
-							backgroundColor: '.json_encode($colors).',
-							label: "Teamups With Other Sharks"
-						}]
-					};
-					SFS.Chart.Pie.sharkTeamUps(teamupData, "'.$chart_name.'", "'.$chartTitle.'", "'.$categories.'");
-				});
-			}(mediaWiki));
+			mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+				var teamupData = {
+					labels: '.json_encode($labels).',
+					datasets: [{
+						data: '.json_encode($nums).',
+						backgroundColor: '.json_encode($colors).',
+						label: "Teamups With Other Sharks"
+					}]
+				};
+				SFS.Chart.Pie.sharkTeamUps(teamupData, "'.$chart_name.'", "'.$chartTitle.'", "'.$categories.'");
+			});
 		});
 		</script>
 		';
