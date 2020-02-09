@@ -58,7 +58,7 @@ var SFS = SFS || {
             
             hoverHandler: function(evt, elm) {
             	if (elm && gtag) {
-            		console.log(elm);
+            		//console.log(elm);
             		if (elm.length > 0) {
 	            		var chartConfig = elm[0]._chart.config;
 	            		var title = chartConfig.options.title.text;
@@ -77,7 +77,7 @@ var SFS = SFS || {
             
             clickHandler: function(evt, elm) {
             	if (elm && gtag) {
-	            	console.log(elm);
+	            	//console.log(elm);
 	            	if (elm.length > 0) {
 	            		var chartConfig = elm[0]._chart.config;
 	            		var title = chartConfig.options.title.text;
