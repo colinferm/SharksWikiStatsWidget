@@ -57,9 +57,17 @@ var SFS = SFS || {
             },
             
             hoverHandler: function(evt, elm) {
-            	if (gtag) {
-            		console.log("Hovering over: " + elm);
-            		console.log(elm);
+            	if (elm && gtag) {
+            		var chartConfig = elm[0]._chart.config;
+            		var title = chartConfig.options.title.text;
+            		var chartType = chartConfig.type;
+            		//console.log(elm);
+            		//console.log("clicked on: " + chartType);
+            		//console.log("Title: " + title);
+            		gtag('event', 'chart_hover', {
+            			'event_category': chartType,
+            			'event_label': title
+          			});
             	}
             },
             
@@ -68,9 +76,13 @@ var SFS = SFS || {
             		var chartConfig = elm[0]._chart.config;
             		var title = chartConfig.options.title.text;
             		var chartType = chartConfig.type;
-            		console.log(elm);
-            		console.log("clicked on: " + chartType);
-            		console.log("Title: " + title);
+            		//console.log(elm);
+            		//console.log("clicked on: " + chartType);
+            		//console.log("Title: " + title);
+            		gtag('event', 'chart_click', {
+            			'event_category': chartType,
+            			'event_label': title
+          			});
             	}
             }
         },

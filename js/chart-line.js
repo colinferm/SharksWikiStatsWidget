@@ -48,7 +48,9 @@ SFS.Chart.Line.investmentBySeason = function(data, id, chartTitle, categories) {
                         callback: SFS.Utils.MoneyTicks
                     }
                 }]
-            }
+            },
+            onHover: SFS.Utils.Plugins.hoverHandler,
+            onClick: SFS.Utils.Plugins.clickHandler
         }
     });
 }
@@ -91,7 +93,9 @@ SFS.Chart.Line.dealsByType = function(data, id, chartTitle) {
                         display: true
                     }
                 }]
-            }
+            },
+            onHover: SFS.Utils.Plugins.hoverHandler,
+            onClick: SFS.Utils.Plugins.clickHandler
         }
     });
 }
@@ -134,7 +138,9 @@ SFS.Chart.Line.dealsByCategory = function(data, id, chartTitle) {
                         display: true
                     }
                 }]
-            }
+            },
+            onHover: SFS.Utils.Plugins.hoverHandler,
+            onClick: SFS.Utils.Plugins.clickHandler
         }
     });
 }
@@ -185,7 +191,9 @@ SFS.Chart.Line.biteBySeason = function(data, id, chartTitle, average) {
                         callback: SFS.Utils.MoneyTicks
                     }
                 }]
-            }
+            },
+            onHover: SFS.Utils.Plugins.hoverHandler,
+            onClick: SFS.Utils.Plugins.clickHandler
         }
     });
 }

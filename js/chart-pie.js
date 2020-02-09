@@ -99,7 +99,9 @@ SFS.Chart.Pie.sharkTeamUps = function(teampUpData, id, chartTitle, categories) {
                         return label + ': ' + dataitem.toString();
                      }
                  }
-             }
+             },
+            onHover: SFS.Utils.Plugins.hoverHandler,
+            onClick: SFS.Utils.Plugins.clickHandler
          },
          data: teampUpData
     });

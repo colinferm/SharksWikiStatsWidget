@@ -46,7 +46,9 @@ SFS.Chart.Bubble.seasonInvestmentByType = function(data, id, chartTitle, categor
 						suggestedMax: verticalTicks
 					}
 				}]
-			}
+			},
+      onHover: SFS.Utils.Plugins.hoverHandler,
+      onClick: SFS.Utils.Plugins.clickHandler
 		},
 	});
 }
