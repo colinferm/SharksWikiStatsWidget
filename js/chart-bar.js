@@ -32,7 +32,9 @@ SFS.Chart.Bar.investmentsByShark = function(data, id, chartTitle, categories) {
             },
             categoryPercentage: 1.0,
             barPercentage: 1.0,
-            onHover: SFS.Utils.Plugins.hoverHandler,
+            hover: {
+                onHover: SFS.Utils.Plugins.hoverHandler
+            },
             onClick: SFS.Utils.Plugins.clickHandler
         }
     });

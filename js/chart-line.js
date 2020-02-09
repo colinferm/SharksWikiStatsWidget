@@ -123,6 +123,7 @@ SFS.Chart.Line.dealsByCategory = function(data, id, chartTitle) {
                 }
             },
             hover: {
+                onHover: SFS.Utils.Plugins.hoverHandler,
                 mode: 'nearest',
                 intersect: true
             },
@@ -139,7 +140,6 @@ SFS.Chart.Line.dealsByCategory = function(data, id, chartTitle) {
                     }
                 }]
             },
-            onHover: SFS.Utils.Plugins.hoverHandler,
             onClick: SFS.Utils.Plugins.clickHandler
         }
     });
@@ -173,6 +173,7 @@ SFS.Chart.Line.biteBySeason = function(data, id, chartTitle, average) {
                 }
             },
             hover: {
+                onHover: SFS.Utils.Plugins.hoverHandler,
                 mode: 'nearest',
                 intersect: true
             },
@@ -192,7 +193,6 @@ SFS.Chart.Line.biteBySeason = function(data, id, chartTitle, average) {
                     }
                 }]
             },
-            onHover: SFS.Utils.Plugins.hoverHandler,
             onClick: SFS.Utils.Plugins.clickHandler
         }
     });
