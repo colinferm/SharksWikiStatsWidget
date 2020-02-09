@@ -19,19 +19,21 @@ SFS.Chart.Bar.investmentsByShark = function(data, id, chartTitle, categories) {
             responsive: true,
             scales: {
                 xAxes: [{
-					stacked: true,
-					ticks: {
-						source: 'labels',
-						beginAtZero: true,
-						autoSkip: false
-					}
+                	stacked: true,
+                	ticks: {
+	                	source: 'labels',
+	                	beginAtZero: true,
+	                	autoSkip: false
+                	}
                 }],
                 yAxes: [{
-					stacked: true
+                	stacked: true
                 }]
-			},
-			categoryPercentage: 1.0,
-			barPercentage: 1.0
+            },
+            categoryPercentage: 1.0,
+            barPercentage: 1.0,
+            onHover: SFS.Utils.Plugins.hoverHandler,
+            onClick: SFS.Utils.Plugins.clickHandler
         }
     });
 }
