@@ -65,7 +65,7 @@ var SFS = SFS || {
             
             clickHandler: function(evt, elm) {
             	if (elm && gtag) {
-            		var chartConfig = var title = elm[0]._chart.config;
+            		var chartConfig = elm[0]._chart.config;
             		var title = chartConfig.options.title.text;
             		var chartType = chartConfig.type;
             		console.log(elm);
