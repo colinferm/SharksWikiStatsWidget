@@ -59,30 +59,38 @@ var SFS = SFS || {
             hoverHandler: function(evt, elm) {
             	if (elm && gtag) {
             		console.log(elm);
-            		var chartConfig = elm[0]._chart.config;
-            		var title = chartConfig.options.title.text;
-            		var chartType = chartConfig.type;
-            		//console.log("clicked on: " + chartType);
-            		//console.log("Title: " + title);
-            		gtag('event', 'chart_hover', {
-            			'event_category': chartType,
-            			'event_label': title
-          			});
+            		if (elm.length > 0) {
+	            		var chartConfig = elm[0]._chart.config;
+	            		var title = chartConfig.options.title.text;
+	            		var chartType = chartConfig.type;
+	            		//console.log("clicked on: " + chartType);
+	            		//console.log("Title: " + title);
+	            		gtag('event', 'chart_hover', {
+	            			'event_category': chartType,
+	            			'event_label': title
+	          			});
+          			} else {
+          				gtag('event', 'chart_hover');
+        				}
             	}
             },
             
             clickHandler: function(evt, elm) {
             	if (elm && gtag) {
 	            	console.log(elm);
-            		var chartConfig = elm[0]._chart.config;
-            		var title = chartConfig.options.title.text;
-            		var chartType = chartConfig.type;
-            		//console.log("clicked on: " + chartType);
-            		//console.log("Title: " + title);
-            		gtag('event', 'chart_click', {
-            			'event_category': chartType,
-            			'event_label': title
-          			});
+	            	if (elm.length > 0) {
+	            		var chartConfig = elm[0]._chart.config;
+	            		var title = chartConfig.options.title.text;
+	            		var chartType = chartConfig.type;
+	            		//console.log("clicked on: " + chartType);
+	            		//console.log("Title: " + title);
+	            		gtag('event', 'chart_click', {
+	            			'event_category': chartType,
+	            			'event_label': title
+	          			});
+	          		} else {
+	          			gtag('event', 'chart_click');
+	          		}
             	}
             }
         },
