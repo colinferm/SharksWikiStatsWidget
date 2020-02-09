@@ -18,6 +18,7 @@ SFS.Chart.Bubble.seasonInvestmentByType = function(data, id, chartTitle, categor
 												
 			},
 			hover: {
+				onHover: SFS.Utils.Plugins.hoverHandler,
 				mode: 'nearest',
 				intersect: true
 			},
@@ -47,8 +48,7 @@ SFS.Chart.Bubble.seasonInvestmentByType = function(data, id, chartTitle, categor
 					}
 				}]
 			},
-      onHover: SFS.Utils.Plugins.hoverHandler,
-      onClick: SFS.Utils.Plugins.clickHandler
+			onClick: SFS.Utils.Plugins.clickHandler
 		},
 	});
 }
