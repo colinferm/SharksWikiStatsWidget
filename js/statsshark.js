@@ -54,6 +54,20 @@ var SFS = SFS || {
                     }
                     ctx.restore();
                 }
+            },
+            
+            hoverHandler: function(evt, elm) {
+            	if (gtag) {
+            		console.log("Hovering over: " + elm);
+            		console.log(elm);
+            	}
+            },
+            
+            clickHandler: function(evt, elm) {
+            	if (gtag) {
+            		console.log("clicked on: " + elm);
+            		console.log(elm);
+            	}
             }
         },
         hasData: function(datasets) {

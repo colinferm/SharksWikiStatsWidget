@@ -26,7 +26,9 @@ SFS.Chart.Pie.seasonInvestmentByType = function(data, id, chartTitle, categories
                         return label + ': ' + dataItem.toString();
                     }
                 }
-            }
+            },
+            onHover: SFS.Utils.Plugins.hoverHandler,
+            onClick: SFS.Utils.Plugins.clickHandler
         },
         data: data
     });
@@ -63,7 +65,9 @@ SFS.Chart.Pie.sharkInvestmentTotals = function(investmentAmountData, id, chartTi
                         }
                      }
                  }
-             }
+             },
+            onHover: SFS.Utils.Plugins.hoverHandler,
+            onClick: SFS.Utils.Plugins.clickHandler
          },
          data: investmentAmountData
     });
