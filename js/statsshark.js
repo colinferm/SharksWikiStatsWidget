@@ -59,7 +59,7 @@ var SFS = SFS || {
             hoverHandler: function(evt, elm) {
             	if (gtag) {
                     var chartConfig = this.chart.config;
-                    if (!chartConfig.options.firedHover || chartConfig.options.hoverEventTime <= Date.now() + 10000) {
+                    if (!chartConfig.options.firedHover || chartConfig.options.hoverEventTime + 10000 <= Date.now()) {
                         console.log("Firing hover event!")
                         var title = chartConfig.options.title.text;
                         var chartType = chartConfig.type;
