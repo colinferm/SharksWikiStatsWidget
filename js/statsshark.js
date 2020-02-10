@@ -69,6 +69,8 @@ var SFS = SFS || {
                             'event_category': chartType,
                             'event_label': title
                         });
+                        chartConfig.options.firedHover = true;
+                        chartConfig.options.hoverEventTime = Date.now();
                     } else {
                         console.warn("Not firing hover, too soon after last one.");
                     }
