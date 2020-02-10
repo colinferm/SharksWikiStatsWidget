@@ -59,14 +59,19 @@ var SFS = SFS || {
             hoverHandler: function(evt, elm) {
             	if (gtag) {
                     var chartConfig = this.chart.config;
-                    var title = chartConfig.options.title.text;
-                    var chartType = chartConfig.type;
-                    //console.log("clicked on: " + chartType);
-                    //console.log("Title: " + title);
-                    gtag('event', 'chart_hover', {
-                        'event_category': chartType,
-                        'event_label': title
-                    });
+                    if (!chartConfig.options.firedHover || chartConfig.options.hoverEventTime <= Date.now() + 10000) {
+                        console.log("Firing hover event!")
+                        var title = chartConfig.options.title.text;
+                        var chartType = chartConfig.type;
+                        //console.log("clicked on: " + chartType);
+                        //console.log("Title: " + title);
+                        gtag('event', 'chart_hover', {
+                            'event_category': chartType,
+                            'event_label': title
+                        });
+                    } else {
+                        console.warn("Not firing hover, too soon after last one.");
+                    }
             	}
             },
             
