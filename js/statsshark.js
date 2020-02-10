@@ -171,6 +171,8 @@ var SFS = SFS || {
 window.SFS = SFS;
 Chart.defaults.global.title.fontFamily = "'Archivo Black', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif";
 Chart.defaults.global.tooltips.titleFontFamily = "'Archivo Black', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif";
+Chart.defaults.global.firedHover = false;
+Chart.defaults.global.hoverEventTime = Date.now();
 Chart.plugins.register({
     afterDraw: SFS.Utils.Plugins.noData
 });
