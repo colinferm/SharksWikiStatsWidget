@@ -1,10 +1,10 @@
 {
 	"name": "Stats For Sharks Charts Widgets",
 	"author": "Colin Andrew Ferm",
-	"url": "https://www.mediawiki.org/wiki/Extension:Example",
+	"url": "https://github.com/colinferm/SharksWikiStatsWidget",
 	"description": "Added the ability to put embeddable Charts into the MediaWiki and generate the data.",
 	"version": "2.0",
-	"license-name": "GPL-2.0+",
+	"license-name": "BSD-3-Clause",
 	"type": "validextensionclass",
 	"requires": {
 		"MediaWiki": ">= 1.32.0"
