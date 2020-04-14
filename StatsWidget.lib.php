@@ -152,7 +152,7 @@ class StatsWidgetLib {
             //$investmentQuery .= "AND d.deal_type != 'NONE' ";
         }
         */
-        $investmentQuery .= StatsWidgetLib::builCategoryQuery($categories);
+        $investmentQuery .= StatsWidgetLib::buildCategoryQuery($categories);
         if (strlen($shark)) {
             $investmentQuery .= "AND s.shark IN (".$shark.") ";
         }
@@ -282,7 +282,7 @@ class StatsWidgetLib {
                     "AND s.id = sdm.shark_id ".
                     "AND d.episode_id = e.id ";
             
-            $amtQuery .= StatsWidgetLib::builCategoryQuery($categories);
+            $amtQuery .= StatsWidgetLib::buildCategoryQuery($categories);
             /*
             if (strlen($categories) && strpos($categories, ',') != -1) {
                 $comma_count = substr_count($categories, ',') + 1;
@@ -348,7 +348,7 @@ class StatsWidgetLib {
         if ($season > 0) {
             $investmentAmtQuery .= "AND e.season_id = ".$season." ";
         }
-        $investmentAmtQuery .= StatsWidgetLib::builCategoryQuery($categories);
+        $investmentAmtQuery .= StatsWidgetLib::buildCategoryQuery($categories);
         /*
         if (strlen($categories)) {
             $investmentAmtQuery .= "AND d.category IN (".$categories.") ";
@@ -392,9 +392,12 @@ class StatsWidgetLib {
         } else {
             $bubbleInvestmentQuery .= "AND s.main_cast =  1 ";
         }
+        /*
         if (strlen($categories)) {
             $bubbleInvestmentQuery .= "AND d.category IN (".$categories.") ";
         }
+        */
+        $bubbleInvestmentQuery .= StatsWidgetLib::buildCategoryQuery($categories);
 
         if ($startSeason > 1) {
             $bubbleInvestmentQuery .= "AND e.season_id >= ".$startSeason." ";
@@ -738,7 +741,7 @@ class StatsWidgetLib {
         return trim(str_replace("'", "", $shark));
     }
 
-    public static function builCategoryQuery($categories) {
+    public static function buildCategoryQuery($categories) {
         $query = " ";
         if (strlen($categories) && strpos($categories, ',') != -1) {
             $comma_count = substr_count($categories, ',') + 1;
