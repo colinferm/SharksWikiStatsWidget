@@ -251,8 +251,8 @@ class StatsWidgetRender {
 	public static function renderDealsByInvestmentTypeData($start, $end, $dealTypes) {
 		$endSeason = $end;
 		if ($end == 0) {
-            $endSeason = StatsWidgetLib::getLatestSeason();
-        }
+			$endSeason = StatsWidgetLib::getLatestSeason();
+		}
 		$data = StatsWidgetLib::dealsByInvestmentType($start, $endSeason, $dealTypes);
 		$seasonLabels = StatsWidgetLib::seasonLabels($start, $endSeason);
 
