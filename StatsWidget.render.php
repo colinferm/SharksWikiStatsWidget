@@ -116,7 +116,6 @@ class StatsWidgetRender {
 	}
 
 	public static function renderSeasonBySeasonInvestmentData($start, $end, $mainCast, $categories = "", $shark = "", $chartTitle = "") {
-		//MWDebug::log("Main Cast: ".$mainCast);
 		$compiledData = StatsWidgetLib::seasonBySeasonInvestments($start, $end, $mainCast, $categories, $shark);
 		$seasons = $compiledData['seasonLabels'];
 		$sharkData = $compiledData['sharkData'];
@@ -160,7 +159,7 @@ class StatsWidgetRender {
 	}
 
 	public static function renderSharkAmountInvestmentData($season, $mainCast, $categories, $shark, $chartTitle = "") {
-		MWDebug::log("Categories: ".$categories);
+		MWDebug::log("Categories: ".implode(",", $categories));
 		$result = StatsWidgetLib::investmentAmountsByShark($season, $mainCast, $categories, $shark);
 		$labels = $result['labels'];
 		$colors = $result['colors'];
@@ -173,7 +172,7 @@ class StatsWidgetRender {
 				$chartTitle = "Season ".$season." - Shark Investment Totals";
 			}
 		}
-		$categories = "";
+		//$categories = "";
 
 		$js = '
 		<script>
@@ -204,7 +203,6 @@ class StatsWidgetRender {
 	}
 
 	public static function renderSharkRelativeInvestmentData($startSeason, $season, $categories, $shark, $vTicks = 0) {
-		MWDebug::log("Categories: ".$categories);
 		$result = StatsWidgetLib::relativeInvestmentByShark($startSeason, $season, $categories, $shark);
 
 		$chartTitle = "All Seasons - Shark Investment Totals";
@@ -251,7 +249,6 @@ class StatsWidgetRender {
 	}
 
 	public static function renderDealsByInvestmentTypeData($start, $end, $dealTypes) {
-		//MWDebug::log("Main Cast: ".$mainCast);
 		$endSeason = $end;
 		if ($end == 0) {
             $endSeason = StatsWidgetLib::getLatestSeason();

@@ -130,7 +130,7 @@ class StatsWidgetLib {
     public static function seasonInvestmentByType($season = 0, $categories = "", $shark = "") {
         $safeSeason = (int) $season;
         
-        MWDebug::log("seasonInvestmentByType: Season: ".$season);
+        //MWDebug::log("seasonInvestmentByType: Season: ".$season);
 
         $db = wfGetDB(DB_REPLICA);
 
@@ -177,7 +177,7 @@ class StatsWidgetLib {
     public static function seasonInvestmentByCategory($season = 0, $shark = "", $limit = 0) {
         $safeSeason = (int) $season;
         
-        MWDebug::log("seasonInvestmentByCategory: Season: ".$season);
+        //MWDebug::log("seasonInvestmentByCategory: Season: ".$season);
 
         $db = wfGetDB(DB_REPLICA);
 
@@ -240,7 +240,7 @@ class StatsWidgetLib {
 
     public static function seasonBySeasonInvestments($startSeason = 1, $endSeason = 0, $mainCast = 1, $categories = "", $sharkExtra = "") {
         $db = wfGetDB(DB_REPLICA);
-        MWDebug::log("seasonBySeasonInvestments: Season: ".$startSeason."-".$endSeason);
+        //MWDebug::log("seasonBySeasonInvestments: Season: ".$startSeason."-".$endSeason);
 
         $sharkQuery = "SELECT s.id, s.shark, s.full_name FROM sfs_sharks s, sfs_episode_shark_map m, sfs_episodes e ".
                     "WHERE s.id = m.shark_id AND m.episode_id = e.id ";
@@ -477,7 +477,7 @@ class StatsWidgetLib {
     }
 
     public static function dealsByInvestmentType($startSeason = 1, $endSeason = 0, $dealTypes = "") {
-        MWDebug::log("dealsByInvestmentType: Season: ".$startSeason."-".$endSeason);
+        //MWDebug::log("dealsByInvestmentType: Season: ".$startSeason."-".$endSeason);
 
         $db = wfGetDB(DB_REPLICA);
         $seasons = array();
@@ -525,7 +525,7 @@ class StatsWidgetLib {
     }
 
     public static function dealsByCategory($startSeason = 1, $endSeason = 0, $catTypes = "") {
-        MWDebug::log("dealsByCategory: Season: ".$startSeason."-".$endSeason);
+        //MWDebug::log("dealsByCategory: Season: ".$startSeason."-".$endSeason);
 
         $db = wfGetDB(DB_REPLICA);
         $seasons = array();
@@ -587,7 +587,7 @@ class StatsWidgetLib {
     }
 
     public static function biteBySeason($startSeason, $endSeason, $categories = "", $shark = "", $avg = false) {
-        MWDebug::log("biteBySeason: Season: ".$startSeason."-".$endSeason);
+        //MWDebug::log("biteBySeason: Season: ".$startSeason."-".$endSeason);
 
         $db = wfGetDB(DB_REPLICA);
         $labels = array();

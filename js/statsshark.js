@@ -104,10 +104,7 @@ var SFS = SFS || {
             var noQuotes = categories.replace(/'/g, '');
             var cats = noQuotes.split(',');
             var catLen = cats.length;
-            var text = "Categories: ";
-            if (catLen == 1) {
-                text = "Category: ";
-            }
+            var text = "";
             for (var i = 0; i < catLen; i++) {
                 var cat = cats[i].toLowerCase();
                 cat = cat.charAt(0).toUpperCase() + cat.substr(1);

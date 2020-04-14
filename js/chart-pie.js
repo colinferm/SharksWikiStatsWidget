@@ -1,5 +1,5 @@
 SFS.Chart.Pie.seasonInvestmentByType = function(data, id, chartTitle, categories) {
-    if (categories) {
+	if (!chartTitle && categories) {
 		var formatted = SFS.Utils.formatCategoryNames(categories);
 		chartTitle += " - " + formatted;
 	}
@@ -37,9 +37,9 @@ SFS.Chart.Pie.seasonInvestmentByType = function(data, id, chartTitle, categories
 }
 
 SFS.Chart.Pie.sharkInvestmentTotals = function(investmentAmountData, id, chartTitle, categories) {
-    if (categories) {
-		var formatted = SFS.Utils.formatCategoryNames(categories);
-		chartTitle += " - " + formatted;
+    if (!chartTitle && categories) {
+			var formatted = SFS.Utils.formatCategoryNames(categories);
+			chartTitle += " - " + formatted;
     }
     
     var byAmtCTX = document.getElementById(id).getContext("2d");
