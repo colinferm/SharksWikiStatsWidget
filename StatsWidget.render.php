@@ -535,10 +535,10 @@ class StatsWidgetRender {
 			$output .= "
 					<div class='appearances-data-row'>
 						<div class='appearances-shark {$code}'>{$season_num}</div>
-						<div class='appearances-money'>{$investments}</div>
 						<div class='appearances-graph-container'>
 							<div class='appearances-graph {$graph_class}' style='width: {$percent}%;'><span class='appearances-text'>{$chartText}</span></div>
 						</div>
+						<div class='appearances-money'>{$investments}</div>
 					</div>
 						";
 		}
