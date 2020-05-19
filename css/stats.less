@@ -120,6 +120,16 @@ body {
 						height: 50px;
 					}
 				}
+				
+				.appearances-money {
+					background-color: rgba(255,189,107,1);
+					font-size: 0.9em;
+					line-height: 4em;
+					width: 110px;
+					text-align: center;
+					margin-right: 5px;
+				}
+				
 				.biggest-bite-graph-container,
 				.appearances-graph-container {
 					display: inline-block;
@@ -137,6 +147,26 @@ body {
 						flex-direction: column;
 						justify-content: center;
 						box-shadow: 5px 5px 7px rgba(31,103,149,0.2);
+						
+						&.percent-25 {
+							background-color: transparent;
+							background-image: linear-gradient(to bottom right, rgba(178,214,238,1), rgba(255,189,107,1));
+						}
+						
+						&.percent-50 {
+							background-color: transparent;
+							background-image: linear-gradient(to bottom right, rgba(178,214,238,1), rgba( 185,187,241,1));
+						}
+						
+						&.percent-75 {
+							background-color: transparent;
+							background-image: linear-gradient(to bottom right, rgba(178,214,238,1), rgba(101,106,202,1));
+						}
+						
+						&.percent-95 {
+							background-color: transparent;
+							background-image: linear-gradient(to bottom right, rgba(178,214,238,1), rgba(101,106,202,1));
+						}
 
 						.bite-text,
 						.appearances-text {
@@ -144,10 +174,6 @@ body {
 							text-align: right;
 							padding-right: 5px;
 						}
-					}
-					
-					.appearances-money {
-						background-color: gold;
 					}
 				}
 

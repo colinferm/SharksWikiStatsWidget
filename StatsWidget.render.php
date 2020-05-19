@@ -510,8 +510,18 @@ class StatsWidgetRender {
 			$apps = $item['appearances'];
 			$eps = $item['episodes'];
 			$percent = ($apps / $eps) * 100;
+			if ($percent >= 95) {
+				$graph_class = "percent-95";
+			} else if ($percent >= 75) {
+				$graph_class = "percent-75";
+			} else if ($percent >= 50) {
+				$graph_class = "percent-50";
+			} else {
+				$graph_class = "percent-25";
+			}
 			$investments = $item['investments'];
-			$investments = number_format($investments);
+			
+			$investments = "$".number_format($investments, 0);
 			
 			if ($season > 0) {
 				$chartText = "{$shark}: {$apps} / {$eps} eps";
@@ -525,10 +535,10 @@ class StatsWidgetRender {
 			$output .= "
 					<div class='appearances-data-row'>
 						<div class='appearances-shark {$code}'>{$season_num}</div>
+						<div class='appearances-money'>{$investments}</div>
 						<div class='appearances-graph-container'>
-							<div class='appearances-graph' style='width: {$percent}%;'><span class='appearances-text'>{$chartText}</span></div>
+							<div class='appearances-graph {$graph_class}' style='width: {$percent}%;'><span class='appearances-text'>{$chartText}</span></div>
 						</div>
-						<div class='appearances-money'>${$investments}</div>
 					</div>
 						";
 		}
