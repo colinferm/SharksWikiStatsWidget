@@ -69,3 +69,11 @@ CREATE TABLE `sfs_deal_category_map` (
 	`primary` tinyint NOT NULL DEFAULT 0,
 	INDEX (`deal_id`, `category_id`, `primary`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+DROP TABLE IF EXISTS `sfs_deal_trivia`;
+CREATE TABLE `sfs_deal_category_map` (
+	`deal_id` int(11) NOT NULL,
+	`trivia` VARCHAR(255) NOT NULL,
+	INDEX (`deal_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

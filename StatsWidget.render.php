@@ -496,5 +496,48 @@ class StatsWidgetRender {
 		";
 		return $output;
 	}
+	
+	public static function renderAppearancesChart($shark, $season, $chartTitle, $mainCast) {
+		$data = StatsWidgetLib::getSharkMoneyAppearances($season, $shark, $mainCast);
+		$output = "
+			<div class='appearances-table'>
+				<div class='appearances-table-header'><h2>".$chartTitle."</h2></div>
+				<div class='appearances-data-container'>
+		";
+		foreach ($data as $item) {
+			$code = strtolower($item['shark']);
+			$shark = $item['name'];
+			$apps = $item['appearances'];
+			$eps = $item['episodes'];
+			$percent = ($apps / $eps) * 100;
+			$investments = $item['investments'];
+			$investments = number_format($investments);
+			
+			if ($season > 0) {
+				$chartText = "{$shark}: {$apps} / {$eps} eps";
+			} else {
+				$chartText = "{$apps} / {$eps} eps";
+				$season_num = $item['season_num'];
+				$code = "season_num";
+			}
+			
+			
+			$output .= "
+					<div class='appearances-data-row'>
+						<div class='appearances-shark {$code}'>{$season_num}</div>
+						<div class='appearances-graph-container'>
+							<div class='appearances-graph' style='width: {$percent}%;'><span class='appearances-text'>{$chartText}</span></div>
+						</div>
+						<div class='appearances-money'>${$investments}</div>
+					</div>
+						";
+		}
+		$output .= "
+				</div>
+			</div>
+		";
+		
+		return $output;
+	}
 }
 ?>

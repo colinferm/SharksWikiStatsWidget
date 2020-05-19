@@ -687,6 +687,63 @@ class StatsWidgetLib {
 
         return array('labels' => $labels, 'nums' => $data, 'colors' => $colors);
     }
+    
+    public static function getSharkMoneyAppearances($season = 0, $shark = "", $mainCast = true) {
+    	if ($season == 0 && strlen($shark) == 0) return;
+    	$limitMain = ($mainCast) ? "AND s.main_cast = 1" : "";
+    	
+    	$query = "
+    		SELECT ss.season, ss.id AS season_num, s.id AS shark_id, s.shark, s.full_name, (
+					SELECT count(*) AS ep_app
+					FROM sfs_episode_shark_map esm, sfs_episodes e 
+					WHERE e.id = esm.episode_id
+					AND esm.shark_id = s.id
+					AND e.season_id = ss.id
+					GROUP BY s.shark
+					ORDER BY ep_app DESC
+				) AS appearances, (
+					SELECT count(*) FROM sfs_episodes e WHERE e.season_id = ss.id
+				) AS total_episodes, (
+					SELECT SUM(dsm.deal_amt) 
+					FROM sfs_shark_deal_map dsm, sfs_deal d, sfs_episodes e
+					WHERE dsm.shark_id = s.id
+					AND dsm.deal_id = d.id
+					AND d.episode_id = e.id
+					AND e.season_id = ss.id
+				) AS investments
+				FROM sfs_season ss, sfs_sharks s
+				";
+				
+				if ($season > 0) {
+					$query .= "
+						WHERE ss.id = {$season} {$limitMain}
+						ORDER BY appearances DESC, investments DESC, ss.id DESC
+					";
+				} else if (strlen($shark) > 0) {
+					$query .= "
+						WHERE s.shark = {$shark} {$limitMain}
+						ORDER BY ss.id DESC
+					";
+				}
+				
+				$db = wfGetDB(DB_REPLICA);
+				$appMoneyResult = $db->query($query, 'StatsWidgetLib::sharkMoneyAppearances');
+				$results = array();
+				foreach($appMoneyResult as $r) {
+					if ($r->appearances == 0 || $r->appearances == 'NULL') continue;
+					$t = array(
+						'shark' => $r->shark,
+						'name' => $r->full_name,
+						'appearances' => $r->appearances,
+						'episodes' => $r->total_episodes,
+						'investments' => $r->investments,
+						'season' => $r->season,
+						'season_num' => $r->season_num
+					);
+					$results[] = $t;
+				}
+				return $results;
+    }
 
     public static function dealTypeLabel($key) {
         if ($key == "IP") {

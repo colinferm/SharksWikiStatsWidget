@@ -24,6 +24,7 @@ class StatsWidgetHooks {
 
 		if (array_key_exists("type", $args))
 			$chartType = strtolower(htmlspecialchars($args['type']));
+			
 		$chartTitle = "";
 		$chartWidth = "100%";
 		$startSeason = 1;
@@ -110,6 +111,7 @@ class StatsWidgetHooks {
 
 		} else if ($chartType == 'season-investment-by-type') {
 			if (!array_key_exists("season", $args)) $season = 0;
+			
 			if ($categoriesRaw == "RESTAURANT") {
 				$categories = StatsWidgetLib::normalizeList("SERVICE,FOOD,RETAIL");
 			}
@@ -117,7 +119,7 @@ class StatsWidgetHooks {
 			$js = StatsWidgetRender::renderSeasonInvestmentByType($season, $categories, $shark, $chartTitle);
 			StatsWidgetHooks::$scriptInclusions .= $js;
 
-		}else if ($chartType == 'season-investment-by-category') {
+		} else if ($chartType == 'season-investment-by-category') {
 			if (!array_key_exists("season", $args)) $season = 0;
 
 			$js = StatsWidgetRender::renderSeasonInvestmentByCategory($season, $shark, $limit);
@@ -162,9 +164,6 @@ class StatsWidgetHooks {
 			$js = StatsWidgetRender::renderTeamUpData($categories, $shark, $limit, $chartTitle);
 			StatsWidgetHooks::$scriptInclusions .= $js;
 			StatsWidgetHooks::$teamCounts++;
-
-		} else if ($chartType != 'biggest-bites') {
-			return;
 		}
 
 		$chartId = $chartType;
@@ -183,9 +182,14 @@ class StatsWidgetHooks {
 			}
 		}
 
-		if ($chartType == 'biggest-bites') {
+		if ($chartType == 'appearances') {
+			$chart = StatsWidgetRender::renderAppearancesChart($shark, $season, $chartTitle, $mainCast);
+			return array($chart, "markerType" => 'nowiki' );;
+			
+		} else if ($chartType == 'biggest-bites') {
 			$chart = StatsWidgetRender::renderBiggestBiteChart($categories, $shark, $season, $chartTitle);
 			return array($chart, "markerType" => 'nowiki' );;
+			
 		} else {
 			if (substr_count($style, 'size-full')) {
 				$chart = '

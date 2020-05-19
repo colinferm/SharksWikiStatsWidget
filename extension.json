@@ -3,7 +3,7 @@
 	"author": "Colin Andrew Ferm",
 	"url": "https://www.mediawiki.org/wiki/Extension:Example",
 	"description": "Added the ability to put embeddable Charts into the MediaWiki and generate the data.",
-	"version": "1.0",
+	"version": "1.1",
 	"license-name": "GPL-2.0+",
 	"type": "validextensionclass",
 	"manifest_version": 1,

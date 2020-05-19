@@ -21,11 +21,13 @@ body {
 		}
 	}
 
-	.biggest-bite {
+	.biggest-bite,
+	.appearances-table {
 		border: 1px solid #5797c1;
 		padding: 5px;
 
-		.biggest-bite-header {
+		.biggest-bite-header,
+		.appearances-table-header {
 			background-color: #5797c1;
 			padding: 5px;
 			margin-bottom: 5px;
@@ -42,27 +44,92 @@ body {
 			}
 		}
 
-		.biggest-bite-data-container {
-			.biggest-bite-data-row {
+		.biggest-bite-data-container,
+		.appearances-data-container {
+			.biggest-bite-data-row,
+			.appearances-data-row {
 				margin-bottom: 5px; 
 				display: flex;
 
-				.biggest-bite-shark {
+				.biggest-bite-shark,
+				.appearances-shark {
 					display: inline-block;
 					margin-right: 5px;
+					width: 55px;
+					min-width: 55px;
+					min-height: 50px;
+					
+					&.barbara {
+							background-image: url('/extensions/StatsWidget/img/square-barbara.jpg');
+							background-repeat: no-repeat;
+							background-size: contain;
+							width: 50px;
+							height: 50px;
+					}
+					
+					&.mark {
+							background-image: url('/extensions/StatsWidget/img/square-mark.jpg');
+							background-repeat: no-repeat;
+							background-size: contain;
+							width: 50px;
+							height: 50px;
+					}
+					
+					&.kevin {
+							background-image: url('/extensions/StatsWidget/img/square-kevin.jpg');
+							background-repeat: no-repeat;
+							background-size: contain;
+							width: 50px;
+							height: 50px;
+					}
+					
+					&.lori {
+							background-image: url('/extensions/StatsWidget/img/square-lori.jpg');
+							background-repeat: no-repeat;
+							background-size: contain;
+							width: 50px;
+							height: 50px;
+					}
+					
+					&.daymond {
+							background-image: url('/extensions/StatsWidget/img/square-daymond.jpg');
+							background-repeat: no-repeat;
+							background-size: contain;
+							width: 50px;
+							height: 50px;
+					}
+					
+					&.robert {
+							background-image: url('/extensions/StatsWidget/img/square-robert.jpg');
+							background-repeat: no-repeat;
+							background-size: contain;
+							width: 50px;
+							height: 50px;
+					}
+					
+					&.season_num {
+						text-align: center;
+						font-weight: bold;
+						font-size: 22px;
+						line-height: 48px;
+					}
 
 					img {
 						max-width: 50px;
+						width: 50px;
+						height: 50px;
 					}
 				}
-				.biggest-bite-graph-container {
+				.biggest-bite-graph-container,
+				.appearances-graph-container {
 					display: inline-block;
 					width: 100%;
 					display: flex;
 					flex-direction: column;
 					justify-content: center;
 
-					.biggest-bite-graph {
+					.biggest-bite-graph,
+					.appearances-graph {
 						width: 100%;
 						height: 75%;
 						background-color: rgba(178,214,238,1);
@@ -71,11 +138,16 @@ body {
 						justify-content: center;
 						box-shadow: 5px 5px 7px rgba(31,103,149,0.2);
 
-						.bite-text {
+						.bite-text,
+						.appearances-text {
 							font-weight: bold;
 							text-align: right;
 							padding-right: 5px;
 						}
+					}
+					
+					.appearances-money {
+						background-color: gold;
 					}
 				}
 
