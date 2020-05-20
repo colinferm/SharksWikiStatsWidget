@@ -438,62 +438,63 @@ class StatsWidgetRender {
 		return $js;
 	}
 
-	public static function renderBiggestBiteChart($categories, $shark, $season, $chartTitle = "Biggest Bites") {
+	public static function renderBiggestBiteChart($season = 0, $category = "", $shark = "", $chartTitle = "Biggest Bites", $showDesc = true) {
+		$data = StatsWidgetLib::sharkBiteStats($season, $category, $shark);
+		$seasonChart = false;
+		if ($season > 0) $seasonChart = true;
+		
+		//if (count($data)) return;
+		
+		if (!strlen($chartTitle)) {
+			if ($seasonChart) {
+				$chartTitle = "Season {$season} Bites";
+			} else {
+				$chartTitle = "Bite Per Season";
+			}
+		}
+		
 		$output = "
 			<div class='biggest-bite'>
-				<div class='biggest-bite-header'><h2>".$chartTitle."</h2></div>
+				<div class='biggest-bite-header'><h2>{$chartTitle}</h2></div>
 				<div class='biggest-bite-data-container'>
-					<div class='biggest-bite-data-row'>
-						<div class='biggest-bite-shark'>
-							<img src='/extensions/StatsWidget/img/square-barbara.jpg'>
-						</div>
-						<div class='biggest-bite-graph-container'>
-							<div class='biggest-bite-graph' style='width: 75%;'><span class='bite-text'>$1,750,000 in value bitten</span></div>
-						</div>
+		";
+		
+		foreach($data as $item) {
+			$code = strtolower($item['shark']);
+			$avg_bite = "$".number_format($item['avg_bite'], 0);
+			$percent = number_format($item['total_bite'], 0);
+			$season_num = $item['season_num'];
+			
+			if (!$seasonChart) {
+				$season_num = $item['season_num'];
+				$code = "season_num";
+			}
+		
+			$output .= "
+				<div class='biggest-bite-data-row'>
+					<div class='biggest-bite-shark {$code}'>{$season_num}</div>
+					<div class='biggest-bite-graph-container'>
+						<div class='biggest-bite-graph' style='width: {$percent}%;'><span class='bite-text'>{$percent}%</span></div>
+						<div class='biggest-bite-percent'>{$avg_bite}</div>
 					</div>
+				</div>
+			";
+
+			}
+			
+			if ($showDesc) {
+				$output .= "
 					<div class='biggest-bite-data-row'>
-						<div class='biggest-bite-shark'>
-							<img src='/extensions/StatsWidget/img/square-daymond.jpg'>
-						</div>
-						<div class='biggest-bite-graph-container'>
-							<div class='biggest-bite-graph' style='width: 55%;'><span class='bite-text'>$1,750,000 in value bitten</span></div>
-						</div>
+						<div class='biggest-bite-desc'>The <a href=\"/entry/Shark_Tank_Bite\">Shark Tank Bite</a> is a term we use for the amount of total capitalization value the the sharks have \"bitten\" off the company they've invested in. The number in the bar represents the <em>average</em> amount the shark has bitten from each of their companies while the length of the bar represents the total percentage difference between when the companies entered and when they left. A bar at 60% means that, on average, that sharks companies lose 60% of their value after making a deal.</div>
 					</div>
-					<div class='biggest-bite-data-row'>
-						<div class='biggest-bite-shark'>
-							<img src='/extensions/StatsWidget/img/square-kevin.jpg'>
-						</div>
-						<div class='biggest-bite-graph-container'>
-							<div class='biggest-bite-graph' style='width: 90%;'><span class='bite-text'>$1,750,000 in value bitten</span></div>
-						</div>
-					</div>
-					<div class='biggest-bite-data-row'>
-						<div class='biggest-bite-shark'>
-							<img src='/extensions/StatsWidget/img/square-lori.jpg'>
-						</div>
-						<div class='biggest-bite-graph-container'>
-							<div class='biggest-bite-graph' style='width: 85%;'><span class='bite-text'>$1,750,000 in value bitten</span></div>
-						</div>
-					</div>
-					<div class='biggest-bite-data-row'>
-						<div class='biggest-bite-shark'>
-							<img src='/extensions/StatsWidget/img/square-mark.jpg'>
-						</div>
-						<div class='biggest-bite-graph-container'>
-							<div class='biggest-bite-graph' style='width: 65%;'><span class='bite-text'>$1,750,000 in value bitten</span></div>
-						</div>
-					</div>
-					<div class='biggest-bite-data-row'>
-						<div class='biggest-bite-shark'>
-							<img src='/extensions/StatsWidget/img/square-robert.jpg'>
-						</div>
-						<div class='biggest-bite-graph-container'>
-							<div class='biggest-bite-graph' style='width: 25%;'><span class='bite-text'>$1,750,000 in value bitten</span></div>
-						</div>
-					</div>
+				";
+			}
+			
+			$output .= "
 				</div>
 			</div>
 		";
+		
 		return $output;
 	}
 	

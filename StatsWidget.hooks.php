@@ -38,6 +38,7 @@ class StatsWidgetHooks {
 		$limit = 0;
 		$vTicks = 0;
 		$average = false;
+		$showDesc = true;
 
 		if (array_key_exists("style", $args))
 			$style = htmlspecialchars($args['style']);
@@ -76,6 +77,11 @@ class StatsWidgetHooks {
 		if (array_key_exists("average", $args)) {
 			$averageParam = htmlspecialchars($args['average']);
 			if ($averageParam == "true") $average = true;
+		}
+		
+		if (array_key_exists("add-description", $args)) {
+			$showDescParam = htmlspecialchars($args['add-description']);
+			if ($showDescParam == "false") $showDesc = false;
 		}
 
 		if (array_key_exists("categories", $args) || array_key_exists("category", $args)) {
@@ -184,11 +190,11 @@ class StatsWidgetHooks {
 
 		if ($chartType == 'appearances') {
 			$chart = StatsWidgetRender::renderAppearancesChart($shark, $season, $chartTitle, $mainCast);
-			return array($chart, "markerType" => 'nowiki' );;
+			return array($chart, "markerType" => 'nowiki' );
 			
 		} else if ($chartType == 'biggest-bites') {
-			$chart = StatsWidgetRender::renderBiggestBiteChart($categories, $shark, $season, $chartTitle);
-			return array($chart, "markerType" => 'nowiki' );;
+			$chart = StatsWidgetRender::renderBiggestBiteChart($season, $categories, $shark, $chartTitle, $showDesc);
+			return array($chart, "markerType" => 'nowiki' );
 			
 		} else {
 			if (substr_count($style, 'size-full')) {

@@ -169,6 +169,37 @@ class StatsWidgetHelp {
             $chartHelp .= '</ul>';
             $chartHelp .= '<hr size="1"/>';
             $chartHelp .= '</div></div>';
+            
+            //appearances help
+            $chartHelp .= '<div class="statsWidgetHelpContainer">';
+            $chartHelp .= '<div class="helpHeader"><h4>Appearances (Table)</h4></div>';
+            $chartHelp .= '<div class="helpBody">';
+            $chartHelp .= '<code class="stats-demo">&lt;statschart type="appearances"/&gt;</code><br/>';
+            $chartHelp .= 'Possible parameters:';
+            $chartHelp .= '<ul>';
+            $chartHelp .= '<li><code>shark</code> - <b>Required</b> - The shark to display appearance data for all seasons for.</li>';
+            $chartHelp .= '<li><code>season</code> - <b>Required</b> - The season to display appearance data for all the sharks on.</li>';
+            $chartHelp .= '<li>(one of the two is required but not both)</li>';
+            $chartHelp .= '</ul>';
+            $chartHelp .= '<hr size="1"/>';
+            $chartHelp .= '</div></div>';
+            
+            //biggest-bites help
+            $chartHelp .= '<div class="statsWidgetHelpContainer">';
+            $chartHelp .= '<div class="helpHeader"><h4>Biggest Bites (Table)</h4></div>';
+            $chartHelp .= '<div class="helpBody">';
+            $chartHelp .= '<code class="stats-demo">&lt;statschart type="biggest-bites"/&gt;</code><br/>';
+            $chartHelp .= 'Possible parameters:';
+            $chartHelp .= '<ul>';
+            $chartHelp .= '<li><code>shark</code> - <b>Required</b> - The shark to display appearance data for all seasons for.</li>';
+            $chartHelp .= '<li><code>season</code> - <b>Required</b> - The season to display appearance data for all the sharks on.</li>';
+            $chartHelp .= '<li>(one of the two is required but not both)</li>';
+            $chartHelp .= '<li><code>category</code> - Whether to limit it to a particular category, probably only useful for shark based, not season based charts.</li>';
+            $chartHelp .= '<li><code>add-description</code> - Add description text (or not) to the chart. [<code>true|false</code>].</li>';
+            $chartHelp .= '<li>(one of the two is required but not both)</li>';
+            $chartHelp .= '</ul>';
+            $chartHelp .= '<hr size="1"/>';
+            $chartHelp .= '</div></div>';
 
             $chartHelp .= "</div>";
 

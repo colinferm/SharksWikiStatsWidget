@@ -589,7 +589,7 @@ class StatsWidgetLib {
         return $seasons;
     }
 
-    public static function biteBySeason($startSeason, $endSeason, $categories = "", $shark = "", $avg = false) {
+    public static function biteBySeason($startSeason = 0, $endSeason = 0, $categories = "", $shark = "", $avg = false) {
         //MWDebug::log("biteBySeason: Season: ".$startSeason."-".$endSeason);
 
         $db = wfGetDB(DB_REPLICA);
@@ -611,13 +611,20 @@ class StatsWidgetLib {
                         "AND e.season_id = s.id ".
                         "AND d.deal_type != 'NONE' ";
         if (strlen($categories)) {
-            $dealCapQuery .= "AND d.category IN (".$categories.") ";
+            $dealCapQuery .= "AND d.category IN ({$categories}) ";
         }
         if (strlen($shark)) {
             $dealCapQuery .= "AND d.id = sdm.deal_id ".
                             "AND sdm.shark_id = sharks.id ".
-                            "AND sharks.shark IN (".$shark.") ";
+                            "AND sharks.shark IN ({$shark}) ";
         }
+        if ($startSeason > 0) {
+        	$dealCapQuery .= "AND s.id >= {$startSeason} ";
+        }
+        if ($endSeason > 0) {
+        	$dealCapQuery .= "AND s.id <= {$endSeason} ";
+        }
+        
         $dealCapQuery .= "GROUP BY s.season ".
                         "ORDER BY s.id ASC"; 
 
@@ -633,6 +640,51 @@ class StatsWidgetLib {
             'proposed' => $proposedData,
             'bite' => $biteData
         );
+    }
+    
+    public static function sharkBiteStats($season = 0, $category = "", $shark = "") {
+    	if (strlen($shark) == 0 && $season == 0) return;
+    	
+    	$query = "
+    		SELECT s.season, s.id AS season_id, sharks.shark, sharks.full_name, 
+				100 - ((SUM(d.deal_money_amt / d.deal_equity_amt) / SUM(d.proposed_money_amt / d.proposed_equity_amt)) * 100) AS total_bite, 
+				(AVG(d.proposed_money_amt / d.proposed_equity_amt) - AVG(d.deal_money_amt / d.deal_equity_amt)) AS avg_bite
+				FROM sfs_deal d , sfs_episodes e, sfs_season s , sfs_shark_deal_map sdm, sfs_sharks sharks 
+				WHERE d.episode_id = e.id 
+				AND e.season_id = s.id 
+				AND d.deal_type != 'NONE' 
+				AND d.id = sdm.deal_id 
+				AND sdm.shark_id = sharks.id
+				AND sharks.main_cast = 1
+			";
+			
+			if (strlen($shark)) {
+				$query .= " AND sharks.shark = {$shark} ";
+			} else if ($season > 0) {
+				$query .= " AND s.id = {$season} ";
+			}
+			
+			$query .= " 
+				GROUP BY s.season, sharks.shark 
+				ORDER BY s.id DESC, total_bite DESC, avg_bite DESC, sharks.shark ASC
+			";
+			
+			$db = wfGetDB(DB_REPLICA);
+			$biteResult = $db->query($query, 'StatsWidgetLib::sharkBiteStats');
+			$data = array();
+			foreach($biteResult as $r) {
+				$t = array(
+					'season' => $r->season,
+					'season_num' => $r->season_id,
+					'shark' => $r->shark,
+					'name' => $r->full_name,
+					'total_bite' => $r->total_bite,
+					'avg_bite' => $r->avg_bite
+				);
+				$data[] = $t;
+			}
+			
+			return $data;
     }
 
     public static function teamupsByShark($categories, $shark, $limit) {

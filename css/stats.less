@@ -124,6 +124,7 @@ body {
 				.appearances-money {
 					background-color: rgba(255,189,107,1);
 					font-size: 0.9em;
+					font-weight: bold;
 					line-height: 4em;
 					width: 110px;
 					text-align: center;
@@ -135,13 +136,20 @@ body {
 					display: inline-block;
 					width: 100%;
 					display: flex;
-					flex-direction: column;
-					justify-content: center;
+					flex-direction: row;
+					justify-content: flex-start;
+					margin-top: 8px;
+					
+					.biggest-bite-percent {
+						margin-left: 5px;
+						margin-top: 5px;
+						font-size: 16px;
+					}
 
 					.biggest-bite-graph,
 					.appearances-graph {
 						width: 100%;
-						height: 75%;
+						height: 85%;
 						/* background-color: rgba(178,214,238,1); */
 						background-image: linear-gradient(-90deg, rgba(178,214,238,1), rgba( 31,103,149,1));
 						display: flex;
