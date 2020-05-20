@@ -174,6 +174,7 @@ class StatsWidgetHelp {
             $chartHelp .= '<div class="statsWidgetHelpContainer">';
             $chartHelp .= '<div class="helpHeader"><h4>Appearances (Table)</h4></div>';
             $chartHelp .= '<div class="helpBody">';
+            $chartHelp .= '<img src="/extensions/StatsWidget/img/appearances.jpg" class="half"><br/>';
             $chartHelp .= '<code class="stats-demo">&lt;statschart type="appearances"/&gt;</code><br/>';
             $chartHelp .= 'Possible parameters:';
             $chartHelp .= '<ul>';
@@ -188,6 +189,7 @@ class StatsWidgetHelp {
             $chartHelp .= '<div class="statsWidgetHelpContainer">';
             $chartHelp .= '<div class="helpHeader"><h4>Biggest Bites (Table)</h4></div>';
             $chartHelp .= '<div class="helpBody">';
+            $chartHelp .= '<img src="/extensions/StatsWidget/img/biggest-bites.png" class="half"><br/>';
             $chartHelp .= '<code class="stats-demo">&lt;statschart type="biggest-bites"/&gt;</code><br/>';
             $chartHelp .= 'Possible parameters:';
             $chartHelp .= '<ul>';
