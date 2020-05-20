@@ -660,6 +660,11 @@ class StatsWidgetLib {
 			
 			if (strlen($shark)) {
 				$query .= " AND sharks.shark = {$shark} ";
+				
+				if (strlen($category)) {
+					$query .= " AND d.category = {$category} ";
+				}
+				
 			} else if ($season > 0) {
 				$query .= " AND s.id = {$season} ";
 			}
@@ -673,6 +678,7 @@ class StatsWidgetLib {
 			$biteResult = $db->query($query, 'StatsWidgetLib::sharkBiteStats');
 			$data = array();
 			foreach($biteResult as $r) {
+				if ($r->total_bite == 0) continue;
 				$t = array(
 					'season' => $r->season,
 					'season_num' => $r->season_id,
