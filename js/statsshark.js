@@ -118,6 +118,11 @@ var SFS = SFS || {
             }
             return text;
         },
+        
+				formatMoneyValue: function(value) {
+					var valNum = Number(value);
+					return valNum.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
 
         SeasonInvestmentByTypeBubbleToolTips: function(tooltip) {
             if (!tooltip || !tooltip.dataPoints) {
@@ -180,3 +185,4 @@ Chart.defaults.global.hoverEventTime = Date.now();
 Chart.plugins.register({
     afterDraw: SFS.Utils.Plugins.noData
 });
+Chart.plugins.unregister(ChartDataLabels);

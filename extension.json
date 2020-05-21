@@ -3,7 +3,7 @@
 	"author": "Colin Andrew Ferm",
 	"url": "https://www.mediawiki.org/wiki/Extension:Example",
 	"description": "Added the ability to put embeddable Charts into the MediaWiki and generate the data.",
-	"version": "1.1",
+	"version": "1.1.0",
 	"license-name": "GPL-2.0+",
 	"type": "validextensionclass",
 	"manifest_version": 1,
@@ -20,6 +20,7 @@
 		"ext.statsforsharks.statswidget.js": {
 			"scripts": [
 				"js/vendor/Chart.bundle.js",
+				"js/vendor/chartjs-plugin-datalabels.js",
 				"js/vendor/color.js",
 				"js/statsshark.js",
 				"js/chart-bar.js",
