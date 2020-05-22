@@ -3,6 +3,11 @@ SFS.Chart.Pie.seasonInvestmentByType = function(data, id, chartTitle, categories
 		var formatted = SFS.Utils.formatCategoryNames(categories);
 		chartTitle += " - " + formatted;
 	}
+	
+	data.datasets[1].datalabels = {
+		anchor: 'center'
+	}
+	
 	var byTypeCTX = document.getElementById(id).getContext("2d");
 	byTypeCTX.canvas.height = byTypeCTX.canvas.width;
 	window.dealTypePieChart = new Chart(byTypeCTX, {
@@ -40,12 +45,18 @@ SFS.Chart.Pie.seasonInvestmentByType = function(data, id, chartTitle, categories
 						var dataset = context.dataset;
 						var count = dataset.data.length;
 						var value = dataset.data[context.dataIndex];
-						return value > count * 1.5;
+						return value >= count;
 					},
 					font: {
 						weight: 'bold'
 					},
-					formatter: Math.round,
+					formatter: function(value, context) {
+						console.log("seasonInvestmentByType");
+						if (context.datasetIndex == 0) {
+							return '$' + SFS.Utils.formatMoneyValue(value);
+						}
+						return value;
+					},
 					anchor: 'end'
 				}
 			},
@@ -64,6 +75,11 @@ SFS.Chart.Pie.sharkInvestmentTotals = function(investmentAmountData, id, chartTi
 		chartTitle += " - " + formatted;
 	}
 	
+	//console.log(investmentAmountData);
+	investmentAmountData.datasets[1].datalabels = {
+		anchor: 'center'
+	}
+	
 	var byAmtCTX = document.getElementById(id).getContext("2d");
 	byAmtCTX.canvas.height = byAmtCTX.canvas.width;
 	window.investAmtPieChart = new Chart(byAmtCTX, {
@@ -75,7 +91,7 @@ SFS.Chart.Pie.sharkInvestmentTotals = function(investmentAmountData, id, chartTi
 				display: true,
 				text: chartTitle
 			},
-			noDataText: "Not enough deals in the dataset create a chart",
+			noDataText: "Not enough deals in this dataset yet to create a chart",
 			responsive: true,
 			tooltips: {
 				callbacks: {
@@ -83,7 +99,7 @@ SFS.Chart.Pie.sharkInvestmentTotals = function(investmentAmountData, id, chartTi
 						var dataset = data.datasets[tooltipItem.datasetIndex];
 						var dataItem = dataset.data[tooltipItem.index];
 						var label = data.labels[tooltipItem.index];
-
+						
 						if (tooltipItem.datasetIndex == 0) {
 							return  label + ': $' + SFS.Utils.formatMoneyValue(dataItem);
 						} else {
@@ -102,20 +118,30 @@ SFS.Chart.Pie.sharkInvestmentTotals = function(investmentAmountData, id, chartTi
 					borderWidth: 2,
 					color: 'white',
 					display: function(context) {
+						//console.log(context);
 						var dataset = context.dataset;
 						var count = dataset.data.length;
 						var value = dataset.data[context.dataIndex];
-						return value > count * 1.5;
+						var sum = SFS.Utils.sumArray(context.dataset.data);
+						if (context.datasetIndex == 1) {
+							var avg = (sum / count) * 0.5;
+							return value >= avg;
+							
+						} else {
+							var avg = (sum / count) * 0.5;
+							console.log("Sum: " + sum + ", Avg: " + avg + ", Value: " + value);
+							return value >= avg;
+						}
 					},
 					font: {
 						weight: 'bold'
 					},
 					formatter: function(value, context) {
+						console.log("sharkInvestmentTotals");
 						if (context.datasetIndex == 0) {
 							return '$' + SFS.Utils.formatMoneyValue(value);
-						} else {
-							return value;
 						}
+						return value;
 					},
 					anchor: 'end'
 				}
@@ -145,7 +171,7 @@ SFS.Chart.Pie.sharkTeamUps = function(teampUpData, id, chartTitle, categories) {
 					display: true,
 					text: chartTitle
 				},
-				noDataText: "Not enough deals in the dataset create a chart",
+				noDataText: "Not enough deals in this dataset yet to create a chart",
 				responsive: true,
 				tooltips: {
 					callbacks: {
@@ -167,6 +193,7 @@ SFS.Chart.Pie.sharkTeamUps = function(teampUpData, id, chartTitle, categories) {
 						borderWidth: 2,
 						color: 'white',
 						display: function(context) {
+							console.log("sharkTeamUps");
 							var dataset = context.dataset;
 							var count = dataset.data.length;
 							var value = dataset.data[context.dataIndex];

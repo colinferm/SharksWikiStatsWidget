@@ -160,6 +160,14 @@ var SFS = SFS || {
             //console.log(tooltip);
             //console.log(data);
         },
+        
+        sumArray: function(vals) {
+        	var sum = 0;
+        	for(var i = 0; i < vals.length; i++) {
+        		sum += Number(vals[i]);
+        	}
+        	return sum;
+        },
 
         MoneyToolTips: function(tooltipItem, data){
             var dataset = data.datasets[tooltipItem.datasetIndex];
