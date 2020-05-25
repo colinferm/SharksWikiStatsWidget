@@ -504,7 +504,7 @@ class StatsWidgetRender {
 			if ($showDesc) {
 				$output .= "
 					<div class='biggest-bite-data-row'>
-						<div class='biggest-bite-desc'>The <a href=\"/entry/Shark_Tank_Bite\">Shark Tank Bite</a> is a term we use for the amount of total capitalization value the the sharks have \"bitten\" off the company they've invested in. The number in the bar represents the <em>average</em> amount the shark has bitten from each of their companies while the length of the bar represents the total percentage difference between when the companies entered and when they left. A bar at 60% means that, on average, that sharks companies lose 60% of their value after making a deal.</div>
+						<div class='biggest-bite-desc'>The <a href=\"/entry/Shark_Tank_Bite\">Shark Tank Bite</a> is a term we use for the amount of total capitalization value the the sharks have \"bitten\" off the company they've invested in. The number at the end of the bar represents the <em>average</em> amount of value each shark has bitten from their companies values while the length of the bar represents the average percentage difference in value between when the companies entered and when they left. A bar at 60% means that, on average, that shark's companies lose 60% of their value after making a deal. A company that had valued itself at $1,000,000 would be worth $400,000 after making a deal with a shark in this example.</div>
 					</div>
 				";
 			}
