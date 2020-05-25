@@ -597,26 +597,27 @@ class StatsWidgetLib {
         $proposedData = array();
         $biteData = array();
 
-        $dealCapQuery = "SELECT s.season, ";
+				$dealCapQuery = "SELECT src.season_id, src.season, ";
         if ($avg) {
-            $dealCapQuery .= "AVG(d.proposed_money_amt / d.proposed_equity_amt) AS proposed_cap, AVG(d.deal_money_amt / d.deal_equity_amt) AS deal_cap  ";
+            $dealCapQuery .= "AVG(src.proposed_cap) AS proposed_cap, AVG(src.deal_cap) AS deal_cap ";
         } else {
-            $dealCapQuery .= "SUM(d.proposed_money_amt / d.proposed_equity_amt) AS proposed_cap, SUM(d.deal_money_amt / d.deal_equity_amt) AS deal_cap  ";
+            $dealCapQuery .= "SUM(src.proposed_cap) AS proposed_cap, SUM(src.deal_cap) AS deal_cap ";
         }
-        $dealCapQuery .= "FROM sfs_deal d , sfs_episodes e, sfs_season s ";
+        $dealCapQuery .= "FROM (
+						SELECT s.id AS season_id, s.season, 
+							(d.proposed_money_amt / d.proposed_equity_amt) AS proposed_cap, 
+							CASE WHEN d.deal_money_amt = 0 THEN d.proposed_money_amt / d.deal_equity_amt ELSE d.deal_money_amt / d.deal_equity_amt END AS deal_cap 
+						FROM sfs_deal d , sfs_episodes e, sfs_season s , sfs_shark_deal_map sdm, sfs_sharks sharks 
+						WHERE d.episode_id = e.id 
+						AND e.season_id = s.id 
+						AND d.deal_type != 'NONE' 
+						AND d.id = sdm.deal_id 
+						AND sdm.shark_id = sharks.id ";
         if (strlen($shark)) {
-            $dealCapQuery .= ", sfs_shark_deal_map sdm, sfs_sharks sharks ";
+            $dealCapQuery .= "AND sharks.shark = {$shark} ";
         }
-        $dealCapQuery .= "WHERE d.episode_id = e.id ".
-                        "AND e.season_id = s.id ".
-                        "AND d.deal_type != 'NONE' ";
         if (strlen($categories)) {
             $dealCapQuery .= "AND d.category IN ({$categories}) ";
-        }
-        if (strlen($shark)) {
-            $dealCapQuery .= "AND d.id = sdm.deal_id ".
-                            "AND sdm.shark_id = sharks.id ".
-                            "AND sharks.shark IN ({$shark}) ";
         }
         if ($startSeason > 0) {
         	$dealCapQuery .= "AND s.id >= {$startSeason} ";
@@ -625,8 +626,9 @@ class StatsWidgetLib {
         	$dealCapQuery .= "AND s.id <= {$endSeason} ";
         }
         
-        $dealCapQuery .= "GROUP BY s.season ".
-                        "ORDER BY s.id ASC"; 
+        $dealCapQuery .= ") AS src
+					GROUP BY src.season_id, src.season
+					ORDER BY src.season_id ASC, src.season ASC"; 
 
         $dealCapResult = $db->query($dealCapQuery, 'StatsWidgetLib::biteBySeason');
         foreach($dealCapResult as $seasonData) {
