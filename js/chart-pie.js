@@ -48,9 +48,6 @@ SFS.Chart.Pie.seasonInvestmentByType = function(data, id, chartTitle, categories
 					},
 					formatter: function(value, context) {
 						console.log("seasonInvestmentByType");
-						if (context.datasetIndex == 0) {
-							return '$' + SFS.Utils.formatMoneyValue(value);
-						}
 						return value;
 					},
 					anchor: "center",

@@ -646,9 +646,12 @@ class StatsWidgetLib {
     	if (strlen($shark) == 0 && $season == 0) return;
     	
     	$query = "
-    		SELECT s.season, s.id AS season_id, sharks.shark, sharks.full_name, 
-				100 - ((SUM(d.deal_money_amt / d.deal_equity_amt) / SUM(d.proposed_money_amt / d.proposed_equity_amt)) * 100) AS total_bite, 
-				(AVG(d.proposed_money_amt / d.proposed_equity_amt) - AVG(d.deal_money_amt / d.deal_equity_amt)) AS avg_bite
+    		SELECT src.season_id, src.season, src.shark, src.full_name, AVG(src.total_bite) AS total_bite, AVG(src.amt_bite) AS avg_bite FROM (
+				SELECT s.id AS season_id, s.season, sharks.shark, sharks.full_name, d.company, 
+					CASE WHEN d.deal_money_amt = 0 THEN 100 - ((d.proposed_money_amt / d.deal_equity_amt) / (d.proposed_money_amt / d.proposed_equity_amt)) * 100 ELSE 100 - ((d.deal_money_amt / d.deal_equity_amt) / (d.proposed_money_amt / d.proposed_equity_amt)) * 100 END AS total_bite, 
+					(d.proposed_money_amt / d.proposed_equity_amt) AS proposed_amt, 
+					CASE WHEN d.deal_money_amt = 0 THEN (d.proposed_money_amt / d.deal_equity_amt) ELSE (d.deal_money_amt / d.deal_equity_amt) END AS deal_amt, 
+					CASE WHEN d.deal_money_amt = 0 THEN (d.proposed_money_amt / d.proposed_equity_amt) - (d.proposed_money_amt / d.deal_equity_amt) ELSE (d.proposed_money_amt / d.proposed_equity_amt) - (d.deal_money_amt / d.deal_equity_amt) END AS amt_bite
 				FROM sfs_deal d , sfs_episodes e, sfs_season s , sfs_shark_deal_map sdm, sfs_sharks sharks 
 				WHERE d.episode_id = e.id 
 				AND e.season_id = s.id 
@@ -669,9 +672,10 @@ class StatsWidgetLib {
 				$query .= " AND s.id = {$season} ";
 			}
 			
-			$query .= " 
-				GROUP BY s.season, sharks.shark 
-				ORDER BY s.id DESC, total_bite DESC, avg_bite DESC, sharks.shark ASC
+			$query .= "
+				) AS src
+				GROUP BY src.season_id, src.season, src.shark, src.full_name
+				ORDER BY src.season_id DESC, src.season DESC, total_bite DESC, avg_bite DESC, src.shark ASC
 			";
 			
 			$db = wfGetDB(DB_REPLICA);

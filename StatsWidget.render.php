@@ -35,8 +35,19 @@ class StatsWidgetRender {
 		$labels = $seasonData['labels'];
 		$data = $seasonData['data'];
 
-		$seasonLabel = "Season ".$season." - Deal Types";
-		if ($season == 0)  $seasonLabel = "All Seasons - Deal Types";
+		if ($season > 0) {
+			$seasonLabel = "Season {$season} - Deal Types";
+			if (strlen($categories)) {
+				$categories = StatsWidgetLib::categoryLabel(StatsWidgetLib::cleanShark($categories));
+				$seasonLabel = "Season {$season} - {$categories} Deal Types";
+			}
+		} elseif ($season == 0) {
+			$seasonLabel = "All Seasons - Deal Types";
+			if (strlen($categories)) {
+				$categories = StatsWidgetLib::categoryLabel(StatsWidgetLib::cleanShark($categories));
+				$seasonLabel = "All Seasons - {$categories} Deal Types";
+			}
+		}
 		if (strlen($chartTitle)) {
 			$seasonLabel = $chartTitle;
 			$categories = "";
@@ -169,10 +180,18 @@ class StatsWidgetRender {
 		if (!strlen($chartTitle)) {
 			$chartTitle = "All Seasons - Shark Investment Totals";
 			if ($season > 0) {
-				$chartTitle = "Season ".$season." - Shark Investment Totals";
+				$chartTitle = "Season {$season} - Shark Investment Totals";
+				if (strlen($categories)) {
+					$categories = StatsWidgetLib::categoryLabel(StatsWidgetLib::cleanShark($categories));
+					$chartTitle = "Season {$season} - {$categories} Investment Totals";
+				}
+			} else {
+				if (strlen($categories)) {
+						$categories = StatsWidgetLib::categoryLabel(StatsWidgetLib::cleanShark($categories));
+						$chartTitle = "All Seasons- {$categories} Investment Totals";
+				}
 			}
 		}
-		//$categories = "";
 
 		$js = '
 		<script>
