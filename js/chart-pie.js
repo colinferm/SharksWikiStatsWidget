@@ -4,10 +4,6 @@ SFS.Chart.Pie.seasonInvestmentByType = function(data, id, chartTitle, categories
 		chartTitle += " - " + formatted;
 	}
 	
-	data.datasets[1].datalabels = {
-		anchor: 'center'
-	}
-	
 	var byTypeCTX = document.getElementById(id).getContext("2d");
 	byTypeCTX.canvas.height = byTypeCTX.canvas.width;
 	window.dealTypePieChart = new Chart(byTypeCTX, {
@@ -57,7 +53,8 @@ SFS.Chart.Pie.seasonInvestmentByType = function(data, id, chartTitle, categories
 						}
 						return value;
 					},
-					anchor: 'end'
+					anchor: "center",
+					align: 'center'
 				}
 			},
 			hover: {
@@ -73,11 +70,6 @@ SFS.Chart.Pie.sharkInvestmentTotals = function(investmentAmountData, id, chartTi
 	if (!chartTitle && categories) {
 		var formatted = SFS.Utils.formatCategoryNames(categories);
 		chartTitle += " - " + formatted;
-	}
-	
-	//console.log(investmentAmountData);
-	investmentAmountData.datasets[1].datalabels = {
-		anchor: 'center'
 	}
 	
 	var byAmtCTX = document.getElementById(id).getContext("2d");
@@ -143,7 +135,13 @@ SFS.Chart.Pie.sharkInvestmentTotals = function(investmentAmountData, id, chartTi
 						}
 						return value;
 					},
-					anchor: 'end'
+					anchor: function(context) {
+						if (context.datasetIndex == 1) {
+							return 'center';
+						} else {
+							return 'end';
+						}
+					}
 				}
 			},
 			hover: {
