@@ -35,8 +35,19 @@ class StatsWidgetRender {
 		$labels = $seasonData['labels'];
 		$data = $seasonData['data'];
 
-		$seasonLabel = "Season ".$season." - Deal Types";
-		if ($season == 0)  $seasonLabel = "All Seasons - Deal Types";
+		if ($season > 0) {
+			$seasonLabel = "Season {$season} - Deal Types";
+			if (strlen($categories)) {
+				$categories = StatsWidgetLib::categoryLabel(StatsWidgetLib::cleanShark($categories));
+				$seasonLabel = "Season {$season} - {$categories} Deal Types";
+			}
+		} elseif ($season == 0) {
+			$seasonLabel = "All Seasons - Deal Types";
+			if (strlen($categories)) {
+				$categories = StatsWidgetLib::categoryLabel(StatsWidgetLib::cleanShark($categories));
+				$seasonLabel = "All Seasons - {$categories} Deal Types";
+			}
+		}
 		if (strlen($chartTitle)) {
 			$seasonLabel = $chartTitle;
 			$categories = "";
@@ -116,7 +127,6 @@ class StatsWidgetRender {
 	}
 
 	public static function renderSeasonBySeasonInvestmentData($start, $end, $mainCast, $categories = "", $shark = "", $chartTitle = "") {
-		//MWDebug::log("Main Cast: ".$mainCast);
 		$compiledData = StatsWidgetLib::seasonBySeasonInvestments($start, $end, $mainCast, $categories, $shark);
 		$seasons = $compiledData['seasonLabels'];
 		$sharkData = $compiledData['sharkData'];
@@ -160,7 +170,7 @@ class StatsWidgetRender {
 	}
 
 	public static function renderSharkAmountInvestmentData($season, $mainCast, $categories, $shark, $chartTitle = "") {
-		MWDebug::log("Categories: ".$categories);
+		MWDebug::log("Categories: ".implode(",", $categories));
 		$result = StatsWidgetLib::investmentAmountsByShark($season, $mainCast, $categories, $shark);
 		$labels = $result['labels'];
 		$colors = $result['colors'];
@@ -170,10 +180,18 @@ class StatsWidgetRender {
 		if (!strlen($chartTitle)) {
 			$chartTitle = "All Seasons - Shark Investment Totals";
 			if ($season > 0) {
-				$chartTitle = "Season ".$season." - Shark Investment Totals";
+				$chartTitle = "Season {$season} - Shark Investment Totals";
+				if (strlen($categories)) {
+					$categories = StatsWidgetLib::categoryLabel(StatsWidgetLib::cleanShark($categories));
+					$chartTitle = "Season {$season} - {$categories} Investment Totals";
+				}
+			} else {
+				if (strlen($categories)) {
+						$categories = StatsWidgetLib::categoryLabel(StatsWidgetLib::cleanShark($categories));
+						$chartTitle = "All Seasons- {$categories} Investment Totals";
+				}
 			}
 		}
-		$categories = "";
 
 		$js = '
 		<script>
@@ -204,7 +222,6 @@ class StatsWidgetRender {
 	}
 
 	public static function renderSharkRelativeInvestmentData($startSeason, $season, $categories, $shark, $vTicks = 0) {
-		MWDebug::log("Categories: ".$categories);
 		$result = StatsWidgetLib::relativeInvestmentByShark($startSeason, $season, $categories, $shark);
 
 		$chartTitle = "All Seasons - Shark Investment Totals";
@@ -251,11 +268,10 @@ class StatsWidgetRender {
 	}
 
 	public static function renderDealsByInvestmentTypeData($start, $end, $dealTypes) {
-		//MWDebug::log("Main Cast: ".$mainCast);
 		$endSeason = $end;
 		if ($end == 0) {
-            $endSeason = StatsWidgetLib::getLatestSeason();
-        }
+			$endSeason = StatsWidgetLib::getLatestSeason();
+		}
 		$data = StatsWidgetLib::dealsByInvestmentType($start, $endSeason, $dealTypes);
 		$seasonLabels = StatsWidgetLib::seasonLabels($start, $endSeason);
 
@@ -441,62 +457,116 @@ class StatsWidgetRender {
 		return $js;
 	}
 
-	public static function renderBiggestBiteChart($categories, $shark, $season, $chartTitle = "Biggest Bites") {
+	public static function renderBiggestBiteChart($season = 0, $category = "", $shark = "", $chartTitle = "Biggest Bites", $showDesc = true) {
+		$data = StatsWidgetLib::sharkBiteStats($season, $category, $shark);
+		$seasonChart = false;
+		if ($season > 0) $seasonChart = true;
+		
+		//if (count($data)) return;
+		
+		if (!strlen($chartTitle)) {
+			if ($seasonChart) {
+				$chartTitle = "Season {$season} Bites";
+			} else {
+				$chartTitle = "Bite Per Season";
+			}
+		}
+		
 		$output = "
 			<div class='biggest-bite'>
-				<div class='biggest-bite-header'><h2>".$chartTitle."</h2></div>
+				<div class='biggest-bite-header'><h2>{$chartTitle}</h2></div>
 				<div class='biggest-bite-data-container'>
-					<div class='biggest-bite-data-row'>
-						<div class='biggest-bite-shark'>
-							<img src='/extensions/StatsWidget/img/square-barbara.jpg'>
-						</div>
-						<div class='biggest-bite-graph-container'>
-							<div class='biggest-bite-graph' style='width: 75%;'><span class='bite-text'>$1,750,000 in value bitten</span></div>
-						</div>
+		";
+		
+		foreach($data as $item) {
+			$code = strtolower($item['shark']);
+			$avg_bite = "$".number_format($item['avg_bite'], 0);
+			$percent = number_format($item['total_bite'], 0);
+			$season_num = $item['season_num'];
+			
+			if (!$seasonChart) {
+				$season_num = $item['season_num'];
+				$code = "season_num";
+			}
+		
+			$output .= "
+				<div class='biggest-bite-data-row'>
+					<div class='biggest-bite-shark {$code}'>{$season_num}</div>
+					<div class='biggest-bite-graph-container'>
+						<div class='biggest-bite-graph' style='width: {$percent}%;'><span class='bite-text'>{$percent}%</span></div>
+						<div class='biggest-bite-percent'>{$avg_bite}</div>
 					</div>
+				</div>
+			";
+
+			}
+			
+			if ($showDesc) {
+				$output .= "
 					<div class='biggest-bite-data-row'>
-						<div class='biggest-bite-shark'>
-							<img src='/extensions/StatsWidget/img/square-daymond.jpg'>
-						</div>
-						<div class='biggest-bite-graph-container'>
-							<div class='biggest-bite-graph' style='width: 55%;'><span class='bite-text'>$1,750,000 in value bitten</span></div>
-						</div>
+						<div class='biggest-bite-desc'>The <a href=\"/entry/Shark_Tank_Bite\">Shark Tank Bite</a> is a term we use for the amount of total capitalization value the the sharks have \"bitten\" off the company they've invested in. The number at the end of the bar represents the <em>average</em> amount of value each shark has bitten from their companies values while the length of the bar represents the average percentage difference in value between when the companies entered and when they left. A bar at 60% means that, on average, that shark's companies lose 60% of their value after making a deal. A company that had valued itself at $1,000,000 would be worth $400,000 after making a deal with a shark in this example.</div>
 					</div>
-					<div class='biggest-bite-data-row'>
-						<div class='biggest-bite-shark'>
-							<img src='/extensions/StatsWidget/img/square-kevin.jpg'>
-						</div>
-						<div class='biggest-bite-graph-container'>
-							<div class='biggest-bite-graph' style='width: 90%;'><span class='bite-text'>$1,750,000 in value bitten</span></div>
-						</div>
-					</div>
-					<div class='biggest-bite-data-row'>
-						<div class='biggest-bite-shark'>
-							<img src='/extensions/StatsWidget/img/square-lori.jpg'>
-						</div>
-						<div class='biggest-bite-graph-container'>
-							<div class='biggest-bite-graph' style='width: 85%;'><span class='bite-text'>$1,750,000 in value bitten</span></div>
-						</div>
-					</div>
-					<div class='biggest-bite-data-row'>
-						<div class='biggest-bite-shark'>
-							<img src='/extensions/StatsWidget/img/square-mark.jpg'>
-						</div>
-						<div class='biggest-bite-graph-container'>
-							<div class='biggest-bite-graph' style='width: 65%;'><span class='bite-text'>$1,750,000 in value bitten</span></div>
-						</div>
-					</div>
-					<div class='biggest-bite-data-row'>
-						<div class='biggest-bite-shark'>
-							<img src='/extensions/StatsWidget/img/square-robert.jpg'>
-						</div>
-						<div class='biggest-bite-graph-container'>
-							<div class='biggest-bite-graph' style='width: 25%;'><span class='bite-text'>$1,750,000 in value bitten</span></div>
-						</div>
-					</div>
+				";
+			}
+			
+			$output .= "
 				</div>
 			</div>
 		";
+		
+		return $output;
+	}
+	
+	public static function renderAppearancesChart($shark, $season, $chartTitle, $mainCast) {
+		$data = StatsWidgetLib::getSharkMoneyAppearances($season, $shark, $mainCast);
+		$output = "
+			<div class='appearances-table'>
+				<div class='appearances-table-header'><h2>".$chartTitle."</h2></div>
+				<div class='appearances-data-container'>
+		";
+		foreach ($data as $item) {
+			$code = strtolower($item['shark']);
+			$shark = $item['name'];
+			$apps = $item['appearances'];
+			$eps = $item['episodes'];
+			$percent = ($apps / $eps) * 100;
+			if ($percent >= 95) {
+				$graph_class = "percent-95";
+			} else if ($percent >= 75) {
+				$graph_class = "percent-75";
+			} else if ($percent >= 50) {
+				$graph_class = "percent-50";
+			} else {
+				$graph_class = "percent-25";
+			}
+			$investments = $item['investments'];
+			
+			$investments = "$".number_format($investments, 0);
+			
+			if ($season > 0) {
+				$chartText = "{$shark}: {$apps} / {$eps} eps";
+			} else {
+				$chartText = "{$apps} / {$eps} eps";
+				$season_num = $item['season_num'];
+				$code = "season_num";
+			}
+			
+			
+			$output .= "
+					<div class='appearances-data-row'>
+						<div class='appearances-shark {$code}'>{$season_num}</div>
+						<div class='appearances-graph-container'>
+							<div class='appearances-graph {$graph_class}' style='width: {$percent}%;'><span class='appearances-text'>{$chartText}</span></div>
+						</div>
+						<div class='appearances-money'>{$investments}</div>
+					</div>
+						";
+		}
+		$output .= "
+				</div>
+			</div>
+		";
+		
 		return $output;
 	}
 }
