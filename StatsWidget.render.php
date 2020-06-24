@@ -15,7 +15,8 @@ class StatsWidgetRender {
 		$js = '
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
-				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 					var investmentBySharkData = {
 						labels: '.json_encode($labels).',
 						datasets: '.json_encode($data).'
@@ -46,7 +47,8 @@ class StatsWidgetRender {
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
-				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 					var data = '.json_encode($data).';
 					var backgrounds = new Array();
 					for (var i = 0; i < data.length; i++) {
@@ -89,7 +91,8 @@ class StatsWidgetRender {
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
-				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 					var numData = '.json_encode($numData).';
 					var backgrounds = new Array();
 					for (var i = 0; i < numData.length; i++) {
@@ -128,7 +131,8 @@ class StatsWidgetRender {
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
-				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 					var seasonBySeasonInvestmentData = {
 						labels: '.json_encode($seasons).',
 						datasets: [
@@ -159,7 +163,11 @@ class StatsWidgetRender {
 	}
 
 	public static function renderSharkAmountInvestmentData($season, $mainCast, $categories, $shark, $chartTitle = "") {
-		MWDebug::log("Categories: ".implode(",", $categories));
+		if (is_array($categories)) {
+			MWDebug::log("Categories: ".implode(",", $categories));
+		} else {
+			MWDebug::log("Category: {$categories}");
+		}
 		$result = StatsWidgetLib::investmentAmountsByShark($season, $mainCast, $categories, $shark);
 		$labels = $result['labels'];
 		$colors = $result['colors'];
@@ -178,7 +186,8 @@ class StatsWidgetRender {
 		<script>
 		(window.RLQ=window.RLQ||[]).push(function() {
 			mw.debug = true
-			mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+			//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+			mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 				var investmentAmountData = {
 					labels: '.json_encode($labels).',
 					datasets: [{
@@ -214,7 +223,8 @@ class StatsWidgetRender {
 		<script>
 		(window.RLQ=window.RLQ||[]).push(function() {
 			mw.debug = true
-			mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+			//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+			mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 				var seasonBySeasonBubbleData = {
 					datasets: [';
 					foreach($result as &$shark) {
@@ -260,7 +270,8 @@ class StatsWidgetRender {
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
-				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 					var dealsByInvestmentTypeData = {
 						labels: '.json_encode($seasonLabels).',
 						datasets: [
@@ -309,7 +320,8 @@ class StatsWidgetRender {
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
-				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 					var dealsByCategoryData = {
 						labels: '.json_encode($seasonLabels).',
 						datasets: [
@@ -368,7 +380,8 @@ class StatsWidgetRender {
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
-				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 					var biteBySeasonData = {
 						labels: '.json_encode($labels).',
 						datasets: [
@@ -420,7 +433,8 @@ class StatsWidgetRender {
 		<script>
 		(window.RLQ=window.RLQ||[]).push(function() {
 			mw.debug = true
-			mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+			//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+			mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 				var teamupData = {
 					labels: '.json_encode($labels).',
 					datasets: [{

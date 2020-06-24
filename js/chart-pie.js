@@ -86,6 +86,7 @@ SFS.Chart.Pie.sharkTeamUps = function(teampUpData, id, chartTitle, categories) {
     var byAmtCTX = document.getElementById(id).getContext("2d");
     window.investAmtPieChart = new Chart(byAmtCTX, {
          type: 'doughnut',
+         maintainAspectRatio: true,
          options: {
              title:{
                  display: true,
