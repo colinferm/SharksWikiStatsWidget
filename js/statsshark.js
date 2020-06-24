@@ -118,6 +118,11 @@ var SFS = SFS || {
             }
             return text;
         },
+        
+				formatMoneyValue: function(value) {
+					var valNum = Number(value);
+					return valNum.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
 
         SeasonInvestmentByTypeBubbleToolTips: function(tooltip) {
             if (!tooltip || !tooltip.dataPoints) {
@@ -155,6 +160,14 @@ var SFS = SFS || {
             //console.log(tooltip);
             //console.log(data);
         },
+        
+        sumArray: function(vals) {
+        	var sum = 0;
+        	for(var i = 0; i < vals.length; i++) {
+        		sum += Number(vals[i]);
+        	}
+        	return sum;
+        },
 
         MoneyToolTips: function(tooltipItem, data){
             var dataset = data.datasets[tooltipItem.datasetIndex];
@@ -180,3 +193,4 @@ Chart.defaults.global.hoverEventTime = Date.now();
 Chart.plugins.register({
     afterDraw: SFS.Utils.Plugins.noData
 });
+Chart.plugins.unregister(ChartDataLabels);
