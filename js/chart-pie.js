@@ -156,38 +156,6 @@ SFS.Chart.Pie.sharkTeamUps = function(teampUpData, id, chartTitle, categories) {
 		chartTitle += " - " + formatted;
 	}
     
-<<<<<<< HEAD
-    var byAmtCTX = document.getElementById(id).getContext("2d");
-    window.investAmtPieChart = new Chart(byAmtCTX, {
-         type: 'doughnut',
-         maintainAspectRatio: true,
-         options: {
-             title:{
-                 display: true,
-                 text: chartTitle
-             },
-             noDataText: "Not enough deals in the dataset create a chart",
-             responsive: true,
-             tooltips: {
-                 callbacks: {
-                     label: function(tooltipItem, data){
-                        var dataset = data.datasets[tooltipItem.datasetIndex];
-                        var dataitem = dataset.data[tooltipItem.index];
-                        var label = data.labels[tooltipItem.index];
-                        
-                        return label + ': ' + dataitem.toString();
-                     }
-                 }
-             },
-             hover: {
-                onHover: SFS.Utils.Plugins.hoverHandler
-            },
-            onClick: SFS.Utils.Plugins.clickHandler
-         },
-         data: teampUpData
-    });
-}
-=======
 	var teamUpCTX = document.getElementById(id).getContext("2d");
 	teamUpCTX.canvas.height = teamUpCTX.canvas.width;
 	window.teamupsPieChart = new Chart(teamUpCTX, {
@@ -240,4 +208,3 @@ SFS.Chart.Pie.sharkTeamUps = function(teampUpData, id, chartTitle, categories) {
 		data: teampUpData
 	});
 }
->>>>>>> 6cbc2544fa028345074c921307748fbcec91aafc
