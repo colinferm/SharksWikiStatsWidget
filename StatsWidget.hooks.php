@@ -195,6 +195,10 @@ class StatsWidgetHooks {
 		} else if ($chartType == 'biggest-bites') {
 			$chart = StatsWidgetRender::renderBiggestBiteChart($season, $categories, $shark, $chartTitle, $showDesc);
 			return array($chart, "markerType" => 'nowiki' );
+
+		} else if ($chartType == 'guest-shark-investments') {
+			$chart = StatsWidgetRender::renderGuestSharkInvestments($season, $average, $chartTitle);
+			return array($chart, "markerType" => 'nowiki' );
 			
 		} else {
 			if (substr_count($style, 'size-full')) {

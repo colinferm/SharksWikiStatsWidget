@@ -1,3 +1,6 @@
+@max40: ~"only screen and (max-width: 40em)";
+@max64: ~"only screen and (max-width: 64em)";
+
 body {
 	.chart-scroll-container {
 		width: 100%;
@@ -22,12 +25,14 @@ body {
 	}
 
 	.biggest-bite,
-	.appearances-table {
+	.appearances-table,
+	.guest-shark-invest-table {
 		border: 1px solid #5797c1;
 		padding: 5px;
 
 		.biggest-bite-header,
-		.appearances-table-header {
+		.appearances-table-header,
+		.guest-shark-invest-table-header {
 			background-color: #5797c1;
 			padding: 5px;
 			margin-bottom: 5px;
@@ -45,19 +50,23 @@ body {
 		}
 
 		.biggest-bite-data-container,
-		.appearances-data-container {
+		.appearances-data-container,
+		.guest-shark-invest-data-container {
 			.biggest-bite-data-row,
-			.appearances-data-row {
+			.appearances-data-row,
+			.guest-shark-invest-data-row {
 				margin-bottom: 5px; 
 				display: flex;
 
 				.biggest-bite-shark,
-				.appearances-shark {
+				.appearances-shark,
+				.guest-invest-shark {
 					display: inline-block;
 					margin-right: 5px;
 					width: 55px;
 					min-width: 55px;
 					min-height: 50px;
+					color: transparent;
 					
 					&.barbara {
 							background-image: url('/extensions/StatsWidget/img/square-barbara.jpg');
@@ -106,6 +115,119 @@ body {
 							width: 50px;
 							height: 50px;
 					}
+
+					/* Guest Sharks */
+					&.anne {
+						background-image: url('/extensions/StatsWidget/img/square-anne.jpg');
+						background-repeat: no-repeat;
+						background-size: contain;
+						width: 50px;
+						height: 50px;
+					}
+
+					&.arod {
+						background-image: url('/extensions/StatsWidget/img/square-arod.jpg');
+						background-repeat: no-repeat;
+						background-size: contain;
+						width: 50px;
+						height: 50px;
+					}
+
+					&.ashton {
+						background-image: url('/extensions/StatsWidget/img/square-ashton.jpg');
+						background-repeat: no-repeat;
+						background-size: contain;
+						width: 50px;
+						height: 50px;
+					}
+
+					&.bethenny {
+						background-image: url('/extensions/StatsWidget/img/square-bethenny.jpg');
+						background-repeat: no-repeat;
+						background-size: contain;
+						width: 50px;
+						height: 50px;
+					}
+
+					&.branson {
+						background-image: url('/extensions/StatsWidget/img/square-branson.jpg');
+						background-repeat: no-repeat;
+						background-size: contain;
+						width: 50px;
+						height: 50px;
+					}
+
+					&.charles {
+						background-image: url('/extensions/StatsWidget/img/square-charles.jpg');
+						background-repeat: no-repeat;
+						background-size: contain;
+						width: 50px;
+						height: 50px;
+					}
+
+					&.chris {
+						background-image: url('/extensions/StatsWidget/img/square-chris.jpg');
+						background-repeat: no-repeat;
+						background-size: contain;
+						width: 50px;
+						height: 50px;
+					}
+
+					&.daniel {
+						background-image: url('/extensions/StatsWidget/img/square-daniel.jpg');
+						background-repeat: no-repeat;
+						background-size: contain;
+						width: 50px;
+						height: 50px;
+					}
+
+					&.jamie {
+						background-image: url('/extensions/StatsWidget/img/square-jaime.jpg');
+						background-repeat: no-repeat;
+						background-size: contain;
+						width: 50px;
+						height: 50px;
+					}
+
+					&.katrina {
+						background-image: url('/extensions/StatsWidget/img/square-katrina.jpg');
+						background-repeat: no-repeat;
+						background-size: contain;
+						width: 50px;
+						height: 50px;
+					}
+
+					&.maria {
+						background-image: url('/extensions/StatsWidget/img/square-maria.jpg');
+						background-repeat: no-repeat;
+						background-size: contain;
+						width: 50px;
+						height: 50px;
+					}
+
+					&.matt {
+						background-image: url('/extensions/StatsWidget/img/square-matt.jpg');
+						background-repeat: no-repeat;
+						background-size: contain;
+						width: 50px;
+						height: 50px;
+					}
+
+					&.rohan {
+						background-image: url('/extensions/StatsWidget/img/square-rohan.jpg');
+						background-repeat: no-repeat;
+						background-size: contain;
+						width: 50px;
+						height: 50px;
+					}
+
+					&.sara {
+						background-image: url('/extensions/StatsWidget/img/square-sara.jpg');
+						background-repeat: no-repeat;
+						background-size: contain;
+						width: 50px;
+						height: 50px;
+					}
 					
 					&.season_num {
 						text-align: center;
@@ -121,7 +243,8 @@ body {
 					}
 				}
 				
-				.appearances-money {
+				.appearances-money,
+				.guest-shark-invest-money {
 					background-color: rgba(255,189,107,1);
 					font-size: 0.9em;
 					font-weight: bold;
@@ -132,7 +255,8 @@ body {
 				}
 				
 				.biggest-bite-graph-container,
-				.appearances-graph-container {
+				.appearances-graph-container,
+				.guest-shark-invest-graph-container {
 					display: inline-block;
 					width: 100%;
 					display: flex;
@@ -149,7 +273,8 @@ body {
 					}
 
 					.biggest-bite-graph,
-					.appearances-graph {
+					.appearances-graph,
+					.guest-shark-invest-graph {
 						width: 100%;
 						height: 85%;
 						/* background-color: rgba(178,214,238,1); */
@@ -182,10 +307,26 @@ body {
 						*/
 
 						.bite-text,
-						.appearances-text {
+						.appearances-text,
+						.guest-shark-invest-text {
 							font-weight: bold;
 							text-align: right;
 							padding-right: 5px;
+
+							@media @max40 {
+								font-size: 0.7rem;
+							}
+						}
+					}
+
+					.guest-shark-invest-text {
+						font-weight: bold;
+						text-align: right;
+						padding-right: 5px;
+						width: 100%;
+
+						@media @max40 {
+							font-size: 0.7rem;
 						}
 					}
 				}
