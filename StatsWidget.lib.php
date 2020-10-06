@@ -809,6 +809,55 @@ class StatsWidgetLib {
 				return $results;
     }
 
+    public static function getGuestSharkInvestments($season, $average, $limit = 5) {
+        $query = "
+            SELECT sum(investments) AS invest_sum, sum(total) AS invest_total, shark, shark_name 
+            FROM sfs_investment_by_shark 
+            WHERE main_cast = 0 
+            AND shark != 'KevinH'
+        ";
+        if ($season > 0) {
+            $query .= " AND season_id = ".$season;
+        }
+        $query .= "
+            GROUP BY shark 
+            ORDER BY invest_total desc
+            LIMIT {$limit};
+        ";
+        if ($average) {
+            $query = "
+                SELECT sum(investments) AS invest_sum, (sum(total) / sum(investments)) AS invest_total, shark, shark_name 
+                FROM sfs_investment_by_shark 
+                WHERE main_cast = 0 
+                AND shark != 'KevinH'
+            ";
+            if ($season > 0) {
+                $query .= " AND season_id = ".$season;
+            }
+            $query .= "
+                GROUP BY shark 
+                ORDER BY invest_total desc
+                LIMIT {$limit};
+            ";
+        }
+
+
+        $results = array();
+        $db = wfGetDB(DB_REPLICA);
+        $guestResults = $db->query($query, 'StatsWidgetLib::getGuestSharkInvestments');
+        foreach($guestResults as $r) {
+            $g = array(
+                'total' => $r->invest_total,
+                'shark' => $r->shark,
+                'name' => $r->shark_name,
+                'investments' => $r->invest_sum
+            );
+            $results[] = $g;
+        }
+
+        return $results;
+    }
+
     public static function dealTypeLabel($key) {
         if ($key == "IP") {
             return $key;

@@ -79,10 +79,10 @@ CREATE TABLE `sfs_deal_category_map` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE OR REPLACE VIEW statsshark.sfs_investment_by_shark AS
-SELECT COUNT(*) AS investments, SUM(sdm.deal_amt) AS total, d.category, s.shark, e.season_id
-FROM sfs_deal d, sfs_sharks s, sfs_shark_deal_map sdm, sfs_episodes e
-WHERE d.id = sdm.deal_id
-AND s.id = sdm.shark_id
-AND d.episode_id = e.id
-GROUP BY s.shark, e.season_id, d.category
-ORDER BY e.season_id ASC, investments DESC;
+SELECT COUNT(*) AS investments, SUM(sdm.deal_amt) AS total, d.category, s.shark, s.full_name AS shark_name, s.id AS shark_id, s.main_cast, e.season_id 
+FROM sfs_deal d, sfs_sharks s, sfs_shark_deal_map sdm, sfs_episodes e 
+WHERE d.id = sdm.deal_id 
+AND s.id = sdm.shark_id 
+AND d.episode_id = e.id 
+GROUP BY s.shark, e.season_id, d.category 
+ORDER BY e.season_id ASC, investments DESC

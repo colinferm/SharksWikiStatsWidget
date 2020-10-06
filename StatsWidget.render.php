@@ -15,8 +15,8 @@ class StatsWidgetRender {
 		$js = '
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
-				//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
-				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				//mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 					var investmentBySharkData = {
 						labels: '.json_encode($labels).',
 						datasets: '.json_encode($data).'
@@ -58,8 +58,8 @@ class StatsWidgetRender {
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
-				//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
-				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				//mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 					var data = '.json_encode($data).';
 					var backgrounds = new Array();
 					for (var i = 0; i < data.length; i++) {
@@ -102,8 +102,8 @@ class StatsWidgetRender {
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
-				//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
-				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				//mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 					var numData = '.json_encode($numData).';
 					var backgrounds = new Array();
 					for (var i = 0; i < numData.length; i++) {
@@ -142,8 +142,8 @@ class StatsWidgetRender {
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
-				//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
-				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				//mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 					var seasonBySeasonInvestmentData = {
 						labels: '.json_encode($seasons).',
 						datasets: [
@@ -174,11 +174,13 @@ class StatsWidgetRender {
 	}
 
 	public static function renderSharkAmountInvestmentData($season, $mainCast, $categories, $shark, $chartTitle = "") {
+		/*
 		if (is_array($categories)) {
 			MWDebug::log("Categories: ".implode(",", $categories));
 		} else {
 			MWDebug::log("Category: {$categories}");
 		}
+		*/
 		$result = StatsWidgetLib::investmentAmountsByShark($season, $mainCast, $categories, $shark);
 		$labels = $result['labels'];
 		$colors = $result['colors'];
@@ -205,8 +207,8 @@ class StatsWidgetRender {
 		<script>
 		(window.RLQ=window.RLQ||[]).push(function() {
 			mw.debug = true
-			//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
-			mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+			mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+			//mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 				var investmentAmountData = {
 					labels: '.json_encode($labels).',
 					datasets: [{
@@ -242,8 +244,8 @@ class StatsWidgetRender {
 		<script>
 		(window.RLQ=window.RLQ||[]).push(function() {
 			mw.debug = true
-			//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
-			mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+			mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+			//mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 				var seasonBySeasonBubbleData = {
 					datasets: [';
 					foreach($result as &$shark) {
@@ -289,8 +291,8 @@ class StatsWidgetRender {
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
-				//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
-				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				//mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 					var dealsByInvestmentTypeData = {
 						labels: '.json_encode($seasonLabels).',
 						datasets: [
@@ -339,8 +341,8 @@ class StatsWidgetRender {
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
-				//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
-				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				//mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 					var dealsByCategoryData = {
 						labels: '.json_encode($seasonLabels).',
 						datasets: [
@@ -399,8 +401,8 @@ class StatsWidgetRender {
 		<script>
 			(window.RLQ=window.RLQ||[]).push(function() {
 				mw.debug = true
-				//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
-				mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+				mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+				//mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 					var biteBySeasonData = {
 						labels: '.json_encode($labels).',
 						datasets: [
@@ -452,8 +454,8 @@ class StatsWidgetRender {
 		<script>
 		(window.RLQ=window.RLQ||[]).push(function() {
 			mw.debug = true
-			//mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
-			mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
+			mw.loader.using(["ext.statsforsharks.statswidget.js"]).done(function() {
+			//mw.loader.enqueue(["ext.statsforsharks.statswidget.js"], function() {
 				var teamupData = {
 					labels: '.json_encode($labels).',
 					datasets: [{
@@ -487,8 +489,8 @@ class StatsWidgetRender {
 		}
 		
 		$output = "
-			<div class='biggest-bite'>
-				<div class='biggest-bite-header'><h2>{$chartTitle}</h2></div>
+			<div class='biggest-bite' itemscope itemtype='https://schema.org/Table'>
+				<div class='biggest-bite-header'><h2 itemprop='about'>{$chartTitle}</h2></div>
 				<div class='biggest-bite-data-container'>
 		";
 		
@@ -505,9 +507,9 @@ class StatsWidgetRender {
 		
 			$output .= "
 				<div class='biggest-bite-data-row'>
-					<div class='biggest-bite-shark {$code}'>{$season_num}</div>
+					<div class='biggest-bite-shark {$code}' prop='name'>{$season_num}</div>
 					<div class='biggest-bite-graph-container'>
-						<div class='biggest-bite-graph' style='width: {$percent}%;'><span class='bite-text'>{$percent}%</span></div>
+						<div class='biggest-bite-graph' style='width: {$percent}%;'><span class='bite-text' prop='text'>{$percent}%</span></div>
 						<div class='biggest-bite-percent'>{$avg_bite}</div>
 					</div>
 				</div>
@@ -518,7 +520,7 @@ class StatsWidgetRender {
 			if ($showDesc) {
 				$output .= "
 					<div class='biggest-bite-data-row'>
-						<div class='biggest-bite-desc'>The <a href=\"/entry/Shark_Tank_Bite\">Shark Tank Bite</a> is a term we use for the amount of total capitalization value the the sharks have \"bitten\" off the company they've invested in. The number at the end of the bar represents the <em>average</em> amount of value each shark has bitten from their companies values while the length of the bar represents the average percentage difference in value between when the companies entered and when they left. A bar at 60% means that, on average, that shark's companies lose 60% of their value after making a deal. A company that had valued itself at $1,000,000 would be worth $400,000 after making a deal with a shark in this example.</div>
+						<div class='biggest-bite-desc' prop='abstract'>The <a href=\"/entry/Shark_Tank_Bite\">Shark Tank Bite</a> is a term we use for the amount of total capitalization value the the sharks have \"bitten\" off the company they've invested in. The number at the end of the bar represents the <em>average</em> amount of value each shark has bitten from their companies values while the length of the bar represents the average percentage difference in value between when the companies entered and when they left. A bar at 60% means that, on average, that shark's companies lose 60% of their value after making a deal. A company that had valued itself at $1,000,000 would be worth $400,000 after making a deal with a shark in this example.</div>
 					</div>
 				";
 			}
@@ -534,8 +536,8 @@ class StatsWidgetRender {
 	public static function renderAppearancesChart($shark, $season, $chartTitle, $mainCast) {
 		$data = StatsWidgetLib::getSharkMoneyAppearances($season, $shark, $mainCast);
 		$output = "
-			<div class='appearances-table'>
-				<div class='appearances-table-header'><h2>".$chartTitle."</h2></div>
+			<div class='appearances-table' itemscope itemtype='https://schema.org/Table'>
+				<div class='appearances-table-header'><h2 itemprop='about'>".$chartTitle."</h2></div>
 				<div class='appearances-data-container'>
 		";
 		foreach ($data as $item) {
@@ -559,6 +561,7 @@ class StatsWidgetRender {
 			
 			if ($season > 0) {
 				$chartText = "{$shark}: {$apps} / {$eps} eps";
+				$season_num = $season_num;
 			} else {
 				$chartText = "{$apps} / {$eps} eps";
 				$season_num = $item['season_num'];
@@ -568,13 +571,87 @@ class StatsWidgetRender {
 			
 			$output .= "
 					<div class='appearances-data-row'>
-						<div class='appearances-shark {$code}'>{$season_num}</div>
+						<div class='appearances-shark {$code}' prop='name'>{$season_num}</div>
 						<div class='appearances-graph-container'>
-							<div class='appearances-graph {$graph_class}' style='width: {$percent}%;'><span class='appearances-text'>{$chartText}</span></div>
+							<div class='appearances-graph {$graph_class}' style='width: {$percent}%;'><span class='appearances-text' prop='text'>{$chartText}</span></div>
 						</div>
-						<div class='appearances-money'>{$investments}</div>
+						<div class='appearances-money' property='materialExtent'>{$investments}</div>
 					</div>
 						";
+		}
+		$output .= "
+				</div>
+			</div>
+		";
+		
+		return $output;
+	}
+
+	public static function renderGuestSharkInvestments($season, $average, $chartTitle) {
+		$data = StatsWidgetLib::getGuestSharkInvestments($season, $average);
+		$output = "
+			<div class='guest-shark-invest-table' itemscope itemtype='https://schema.org/Table'>
+				<div class='guest-shark-invest-table-header'><h2 itemprop='about'>".$chartTitle."</h2></div>
+				<div class='guest-shark-invest-data-container'>
+		";
+		$max_invest = 0;
+		foreach ($data as $item) {
+			$code = strtolower($item['shark']);
+			$shark = $item['name'];
+			$investments = $item['investments'];
+			$total = $item['total'];
+			if ($max_invest == 0) $max_invest = $total;
+
+			$percent = ($total / $max_invest) * 100;
+			if ($percent >= 95) {
+				$graph_class = "percent-95";
+			} else if ($percent >= 75) {
+				$graph_class = "percent-75";
+			} else if ($percent >= 50) {
+				$graph_class = "percent-50";
+			} else {
+				$graph_class = "percent-25";
+			}
+			
+			$total = "$".number_format($total, 0);
+			
+			$season_num = 0;
+			if ($average) {
+				if ($season > 0) {
+					$chartText = "{$shark}: invested {$total} on average in Season {$season}";
+				} else {
+					$chartText = "{$shark}: invested {$total} on average";
+				}
+			} else {
+				if ($season > 0) {
+					$chartText = "{$shark}: invested {$total} in Season {$season}";
+				} else {
+					$chartText = "{$shark}: invested {$total} on Shark Tank";
+				}
+			}
+			
+			if ($percent < 40) {
+				$output .= "
+					<div class='guest-shark-invest-data-row'>
+						<div class='guest-invest-shark {$code}' itemprop='name'>{$shark}</div>
+						<div class='guest-shark-invest-graph-container'>
+							<div class='guest-shark-invest-graph {$graph_class}' style='min-width: {$percent}%;width: {$percent}%;'></div>
+							<span class='guest-shark-invest-text' itemprop='text'>{$chartText}</span>
+						</div>
+						<div class='guest-shark-invest-money' property='materialExtent'>{$investments}</div>
+					</div>
+				";
+			} else {
+				$output .= "
+					<div class='guest-shark-invest-data-row'>
+						<div class='guest-invest-shark {$code}' itemprop='name'>{$shark}</div>
+						<div class='guest-shark-invest-graph-container'>
+							<div class='guest-shark-invest-graph {$graph_class}' style='min-width: {$percent}%;width: {$percent}%;'><span class='guest-shark-invest-text' itemprop='text'>{$chartText}</span></div>
+						</div>
+						<div class='guest-shark-invest-money' property='materialExtent'>{$investments}</div>
+					</div>
+				";
+			}
 		}
 		$output .= "
 				</div>

@@ -203,6 +203,21 @@ class StatsWidgetHelp {
             $chartHelp .= '<hr size="1"/>';
             $chartHelp .= '</div></div>';
 
+            //guest-shark-investments help
+            $chartHelp .= '<div class="statsWidgetHelpContainer">';
+            $chartHelp .= '<div class="helpHeader"><h4>Guest Shark Investments (Table)</h4></div>';
+            $chartHelp .= '<div class="helpBody">';
+            $chartHelp .= '<img src="/extensions/StatsWidget/img/guest-shark-investments.png" class="half"><br/>';
+            $chartHelp .= '<code class="stats-demo">&lt;statschart type="guest-shark-investments"/&gt;</code><br/>';
+            $chartHelp .= 'Possible parameters:';
+            $chartHelp .= '<ul>';
+            $chartHelp .= '<li><code>season</code> - Which season to run the numbers for (if any).</li>';
+            $chartHelp .= '<li><code>average</code> - Whether to average the investment amount over the number of investments made.</li>';
+            $chartHelp .= '<li><code>title</code> - <b>Required</b> -This chart doesn\'t have a default title, please give it one.</li>';
+            $chartHelp .= '</ul>';
+            $chartHelp .= '<hr size="1"/>';
+            $chartHelp .= '</div></div>';
+
             $chartHelp .= "</div>";
 
             $chartHelp .= '<script>
