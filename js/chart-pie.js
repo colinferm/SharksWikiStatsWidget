@@ -22,7 +22,7 @@ SFS.Chart.Pie.seasonInvestmentByType = function(data, id, chartTitle, categories
 						var dataItem = dataset.data[tooltipItem.index];
 						var label = data.labels[tooltipItem.index];
 						if (dataset.label == 'amount') {
-							return  label + ': $' + SFS.Utils.formatMoneyValue(dataItem);
+							return  label + ': ' + SFS.Utils.formatMoneyValue(dataItem);
 						}
 						return label + ': ' + dataItem.toString();
 					}
@@ -47,7 +47,9 @@ SFS.Chart.Pie.seasonInvestmentByType = function(data, id, chartTitle, categories
 						weight: 'bold'
 					},
 					formatter: function(value, context) {
-						console.log("seasonInvestmentByType");
+						if (context.dataset.label == "amount") {
+							return SFS.Utils.formatMoneyValue(value);
+						}
 						return value;
 					},
 					anchor: "center",
@@ -90,7 +92,7 @@ SFS.Chart.Pie.sharkInvestmentTotals = function(investmentAmountData, id, chartTi
 						var label = data.labels[tooltipItem.index];
 						
 						if (tooltipItem.datasetIndex == 0) {
-							return  label + ': $' + SFS.Utils.formatMoneyValue(dataItem);
+							return  label + ': ' + SFS.Utils.formatMoneyValue(dataItem);
 						} else {
 							return label + ': ' + dataItem.toString();
 						}
@@ -128,7 +130,7 @@ SFS.Chart.Pie.sharkInvestmentTotals = function(investmentAmountData, id, chartTi
 					formatter: function(value, context) {
 						console.log("sharkInvestmentTotals");
 						if (context.datasetIndex == 0) {
-							return '$' + SFS.Utils.formatMoneyValue(value);
+							return SFS.Utils.formatMoneyValue(value);
 						}
 						return value;
 					},
@@ -188,7 +190,6 @@ SFS.Chart.Pie.sharkTeamUps = function(teampUpData, id, chartTitle, categories) {
 						borderWidth: 2,
 						color: 'white',
 						display: function(context) {
-							console.log("sharkTeamUps");
 							var dataset = context.dataset;
 							var count = dataset.data.length;
 							var value = dataset.data[context.dataIndex];

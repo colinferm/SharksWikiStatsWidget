@@ -91,6 +91,7 @@ var SFS = SFS || {
             	}
             }
         },
+
         hasData: function(datasets) {
           if (datasets == undefined || datasets.length == 0) return false
           for (var i = 0; i < datasets.length; i++) {
@@ -99,6 +100,7 @@ var SFS = SFS || {
           }
           return false;
         },
+
         formatCategoryNames: function(categories) {
             var noQuotes = categories.replace(/"/g, '');
             var noQuotes = categories.replace(/'/g, '');
@@ -119,9 +121,9 @@ var SFS = SFS || {
             return text;
         },
         
-				formatMoneyValue: function(value) {
-					var valNum = Number(value);
-					return valNum.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        formatMoneyValue: function(value) {
+            var valNum = Number(value);
+            return "$" + valNum.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
 
         SeasonInvestmentByTypeBubbleToolTips: function(tooltip) {
@@ -136,19 +138,20 @@ var SFS = SFS || {
             var label = chart.config.data.datasets[dataSetIndex].label;
             var data = chart.config.data.datasets[dataSetIndex].data[dataIndex];
             //tooltip.body[0].lines[0] = label;
-            var safeAmt = Number(data.amt);
             tooltip.body[0].lines.pop();
             tooltip.title.push(label);
             tooltip.displayColors = false;
-            tooltip.footer.push("Total: $" + safeAmt.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+
+            var money = SFS.Utils.formatMoneyValue(data.amt);
+            tooltip.footer.push("Total: " + money);
             var categories = data.categories;
             var catLen = categories.length;
             
             for (var i = 0 ; i < catLen; i++) {
                 var cat = categories[i];
                 if (cat.category && cat.total) {
-                    var safeTotal = Number(cat.total);
-                    var line = cat.category + ": $"+ safeTotal.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    var money = SFS.Utils.formatMoneyValue(cat.total);
+                    var line = cat.category + ": " + money;
                     tooltip.body[0].lines.push(line);
                 }
             }
@@ -174,14 +177,13 @@ var SFS = SFS || {
             var dataitem = dataset.data[tooltipItem.index];
             var label = dataset.label;
             //console.log(dataitem.toString());
-            var safeValue = Number(dataitem);
-            return  label + ': $' + safeValue.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            var money = SFS.Utils.formatMoneyValue(dataitem);
+            return  label + ': ' + money;
         },
         
         MoneyTicks: function(value, index, values) {
             //console.log(value);
-            var safeValue = Number(value);
-            return  ' $' + safeValue.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return  ' ' + SFS.Utils.formatMoneyValue(value);
         }
     }
 };

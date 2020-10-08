@@ -630,7 +630,7 @@ class StatsWidgetRender {
 				}
 			}
 			
-			if ($percent < 40) {
+			if ($percent <= 45) {
 				$output .= "
 					<div class='guest-shark-invest-data-row'>
 						<div class='guest-invest-shark {$code}' itemprop='name'>{$shark}</div>
