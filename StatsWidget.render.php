@@ -489,7 +489,7 @@ class StatsWidgetRender {
 		}
 		
 		$output = "
-			<div class='biggest-bite' itemscope itemtype='https://schema.org/Table'>
+			<div class='biggest-bite' item itemscope itemtype='https://schema.org/Table'>
 				<div class='biggest-bite-header'><h2 itemprop='about'>{$chartTitle}</h2></div>
 				<div class='biggest-bite-data-container'>
 		";
@@ -536,7 +536,7 @@ class StatsWidgetRender {
 	public static function renderAppearancesChart($shark, $season, $chartTitle, $mainCast) {
 		$data = StatsWidgetLib::getSharkMoneyAppearances($season, $shark, $mainCast);
 		$output = "
-			<div class='appearances-table' itemscope itemtype='https://schema.org/Table'>
+			<div class='appearances-table' item itemscope itemtype='https://schema.org/Table'>
 				<div class='appearances-table-header'><h2 itemprop='about'>".$chartTitle."</h2></div>
 				<div class='appearances-data-container'>
 		";
@@ -590,7 +590,7 @@ class StatsWidgetRender {
 	public static function renderGuestSharkInvestments($season, $average, $chartTitle) {
 		$data = StatsWidgetLib::getGuestSharkInvestments($season, $average);
 		$output = "
-			<div class='guest-shark-invest-table' itemscope itemtype='https://schema.org/Table'>
+			<div class='guest-shark-invest-table' item itemscope itemtype='https://schema.org/Table'>
 				<div class='guest-shark-invest-table-header'><h2 itemprop='about'>".$chartTitle."</h2></div>
 				<div class='guest-shark-invest-data-container'>
 		";
