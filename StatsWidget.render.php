@@ -263,18 +263,20 @@ class StatsWidgetRender {
 									r: '.$s['radius'].',
 									amt: '.$s['amt_invested'].',
 									categories: '.json_encode($s['categories']).'
-								},';
+							},';
 							}
-							$js .= ']';
-						$js .= '},';
+							$js .= "]";
+						$js .= "
+							},";
 					}
-					$js .= ']
+					$js .= "
+					]
 				}
-				SFS.Chart.Bubble.seasonInvestmentByType(seasonBySeasonBubbleData, "shark-rel-investment-'.$season.'", "'.$chartTitle.'", "'.$categories.'", "'.$vTicks.'");
+				SFS.Chart.Bubble.seasonInvestmentByType(seasonBySeasonBubbleData, \"shark-rel-investment-{$season}\", \"{$chartTitle}\", \"{$categories}\", \"{$vTicks}\");
 			});
 		});
 		</script>
-		';
+		";
 
 		return $js;
 	}

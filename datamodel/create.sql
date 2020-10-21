@@ -78,11 +78,31 @@ CREATE TABLE `sfs_deal_category_map` (
 	INDEX (`deal_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE OR REPLACE VIEW statsshark.sfs_investment_by_shark AS
-SELECT COUNT(*) AS investments, SUM(sdm.deal_amt) AS total, d.category, s.shark, s.full_name AS shark_name, s.id AS shark_id, s.main_cast, e.season_id 
-FROM sfs_deal d, sfs_sharks s, sfs_shark_deal_map sdm, sfs_episodes e 
-WHERE d.id = sdm.deal_id 
-AND s.id = sdm.shark_id 
-AND d.episode_id = e.id 
-GROUP BY s.shark, e.season_id, d.category 
+DROP VIEW IF EXISTS statsshark.sfs_investment_by_shark;
+
+DROP TABLE IF EXISTS `sfs_investment_by_shark`;
+CREATE TABLE `sfs_investment_by_shark` (
+  investments INT NOT NULL DEFAULT '0',
+  total decimal(9,2),
+  category VARCHAR(100),
+  deal_type VARCHAR(20),
+  shark VARCHAR(150),
+  shark_name VARCHAR(150),
+  shark_id INT,
+  main_cast TINYINT(4),
+  season_id INT
+);
+CREATE INDEX idx_shark ON sfs_investment_by_shark (shark);
+CREATE INDEX idx_category ON sfs_investment_by_shark (category);
+CREATE INDEX idx_deal_type ON sfs_investment_by_shark (deal_type);
+CREATE INDEX idx_main_cast ON sfs_investment_by_shark (main_cast);
+CREATE INDEX idx_season ON sfs_investment_by_shark (season_id);
+
+INSERT INTO sfs_investment_by_shark
+SELECT COUNT(d.id) AS investments, SUM(sdm.deal_amt) AS total, d.category, d.deal_type, s.shark, s.full_name AS shark_name, s.id AS shark_id, s.main_cast, e.season_id 
+FROM sfs_deal d
+JOIN sfs_episodes e ON (d.episode_id = e.id)
+LEFT JOIN sfs_shark_deal_map sdm ON (d.id = sdm.deal_id)
+LEFT JOIN sfs_sharks s ON (s.id = sdm.shark_id)
+GROUP BY s.shark, e.season_id, d.category, d.deal_type
 ORDER BY e.season_id ASC, investments DESC

@@ -60,7 +60,7 @@ var SFS = SFS || {
             	if (gtag) {
                     var chartConfig = this.chart.config;
                     if (!chartConfig.options.firedHover || chartConfig.options.hoverEventTime + 10000 <= Date.now()) {
-                        console.log("Firing hover event!")
+                        //console.log("Firing hover event!")
                         var title = chartConfig.options.title.text;
                         var chartType = chartConfig.type;
                         //console.log("clicked on: " + chartType);
@@ -72,7 +72,7 @@ var SFS = SFS || {
                         chartConfig.options.firedHover = true;
                         chartConfig.options.hoverEventTime = Date.now();
                     } else {
-                        console.warn("Not firing hover, too soon after last one.");
+                        //console.warn("Not firing hover, too soon after last one.");
                     }
             	}
             },
@@ -127,18 +127,31 @@ var SFS = SFS || {
         },
 
         SeasonInvestmentByTypeBubbleToolTips: function(tooltip) {
+            //console.log(tooltip);
             if (!tooltip || !tooltip.dataPoints) {
                 return;
             }
             
             var chart = window.investmentPerSeasonBubble.chart;
-            //console.log(chart);
             var dataSetIndex = tooltip.dataPoints[0].datasetIndex;
             var dataIndex = tooltip.dataPoints[0].index;
             var label = chart.config.data.datasets[dataSetIndex].label;
             var data = chart.config.data.datasets[dataSetIndex].data[dataIndex];
-            //tooltip.body[0].lines[0] = label;
-            tooltip.body[0].lines.pop();
+            var combined = {
+                chart: chart,
+                dataSetIndex: dataSetIndex,
+                dataIndex: dataIndex,
+                label: label,
+                data: data,
+                body: tooltip.body
+            };
+            //console.log(combined)
+
+            tooltip.body = [
+                {
+                    lines: []
+                }
+            ]
             tooltip.title.push(label);
             tooltip.displayColors = false;
 
