@@ -858,6 +858,80 @@ class StatsWidgetLib {
         return $results;
     }
 
+    public static function getHighestInitialInvestments($includeMainCast = true) {
+        $query = "
+            SELECT DISTINCT q.shark, q.full_name, d.company, m.deal_amt, q.deal_id FROM (
+                SELECT s.shark, s.full_name, MIN(m.deal_id) AS deal_id
+                FROM sfs_sharks s, sfs_shark_deal_map m
+                WHERE s.id = m.shark_id
+        ";
+        if (!$includeMainCast) {
+            $query .= "
+                AND s.main_cast = 0
+            ";
+        }
+        $query .= "
+                GROUP BY s.shark
+                ORDER BY s.id ASC, m.deal_id ASC
+            ) q, sfs_deal d, sfs_shark_deal_map m
+            WHERE d.id = m.deal_id
+            AND q.deal_id = d.id
+            ORDER BY m.deal_amt DESC, q.deal_id ASC
+        ";
+
+        $results = array();
+        $db = wfGetDB(DB_REPLICA);
+        $guestResults = $db->query($query, 'StatsWidgetLib::getHighestInitialInvestments');
+        foreach($guestResults as $r) {
+            $g = array(
+                'shark' => $r->shark,
+                'full_name' => $r->full_name,
+                'company' => $r->company,
+                'amount' => $r->deal_amt
+            );
+            $results[] = $g;
+        }
+
+        return $results;
+    }
+
+    public static function getHighestVal($madeDeal = false, $season = 0, $limit = 10) {
+        $query = "
+            SELECT d.company, (d.proposed_money_amt / d.proposed_equity_amt) AS cap, d.deal_type, d.category, e.season_id
+            FROM sfs_deal d, sfs_episodes e
+            WHERE d.episode_id = e.id
+        ";
+
+        if ($madeDeal) {
+            $query .= "
+                AND d.deal_type != 'NONE'
+            ";
+        }
+        if ($season > 0) {
+            $query .= "
+                AND e.season_id = {$season}
+            ";
+        }
+        $query .= "
+            ORDER BY cap DESC
+            LIMIT {$limit}
+        ";
+
+        $results = array();
+        $db = wfGetDB(DB_REPLICA);
+        $guestResults = $db->query($query, 'StatsWidgetLib::getHighestVal');
+        foreach($guestResults as $r) {
+            $g = array(
+                'company' => $r->company,
+                'season' => $r->season_id,
+                'cap' => $r->cap
+            );
+            $results[] = $g;
+        }
+
+        return $results;
+    }
+
     public static function dealTypeLabel($key) {
         if ($key == "IP") {
             return $key;
